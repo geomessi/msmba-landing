@@ -1,0 +1,34 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Hero from "./Hero.astro";
+import ProblemSection from "./ProblemSection.astro";
+import ProgramSection from "./ProgramSection.astro";
+import SocialProof from "./SocialProof.astro";
+import ProgramSnapshot from "./ProgramSnapshot.astro";
+import FAQSection from "./FAQSection.astro";
+import CTASection from "./CTASection.astro";
+import type { Variant } from "../data/content";
+
+interface Props {
+	variant: Variant;
+}
+
+const { variant } = Astro.props;
+
+// PRD 5.4 — full official program name must appear in title, meta description,
+// and H1 (H1 lives in Hero.astro).
+const title = `${variant.hero.headline} | MS/MBA: Engineering Sciences — Harvard HBS × SEAS`;
+const description = `The MS/MBA: Engineering Sciences is a two-year dual degree from Harvard Business School and Harvard SEAS. ${variant.hero.subhead}`;
+---
+
+<Layout title={title} description={description} bodyClass={variant.theme.bg}>
+	<main>
+		<Hero variant={variant} />
+		<ProblemSection variant={variant} />
+		<ProgramSection variant={variant} />
+		<SocialProof variant={variant} />
+		<ProgramSnapshot variant={variant} />
+		<FAQSection variant={variant} />
+		<CTASection variant={variant} />
+	</main>
+</Layout>

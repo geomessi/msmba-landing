@@ -1,0 +1,26 @@
+---
+import type { Variant } from "../data/content";
+
+interface Props {
+	variant: Variant;
+}
+
+const { variant } = Astro.props;
+const { theme, program } = variant;
+---
+
+<section class="bg-black/[0.03] px-6 py-16 sm:py-20">
+	<div class="mx-auto max-w-3xl">
+		<h2 class={`${theme.headingFont} text-2xl font-bold sm:text-3xl`}>{program.title}</h2>
+		<ul class="mt-8 grid gap-4 sm:grid-cols-2">
+			{
+				program.bullets.map((bullet) => (
+					<li class="flex gap-3 rounded-lg bg-white p-5 shadow-sm">
+						<span class={`${theme.accent} font-bold`}>—</span>
+						<span class="text-black/80">{bullet}</span>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</section>

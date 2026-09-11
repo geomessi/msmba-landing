@@ -1,0 +1,88 @@
+---
+import type { Variant } from "../data/content";
+
+interface Props {
+	variant: Variant;
+	placement: "hero" | "cta";
+}
+
+const { variant, placement } = Astro.props;
+const { theme, hero } = variant;
+const formId = `waitlist-${variant.slug}-${placement}`;
+---
+
+<div class="mx-auto max-w-md">
+	<form
+		id={formId}
+		class="flex flex-col gap-3 sm:flex-row"
+		data-variant={variant.slug}
+		data-cta-kind={hero.ctaKind}
+	>
+		<label class="sr-only" for={`${formId}-email`}>Email address</label>
+		<input
+			id={`${formId}-email`}
+			name="email"
+			type="email"
+			required
+			placeholder="you@email.com"
+			class="w-full rounded-md border border-black/10 bg-white px-4 py-3 text-base text-black placeholder:text-black/40 focus:outline-2 focus:outline-offset-2"
+		/>
+		<button
+			type="submit"
+			class={`${theme.accentText} shrink-0 rounded-md px-6 py-3 text-base font-semibold transition-opacity hover:opacity-90`}
+		>
+			{hero.ctaLabel}
+		</button>
+	</form>
+	<p class="form-status mt-3 text-sm" role="status"></p>
+</div>
+
+<script>
+	import { track } from "../lib/track";
+
+	function utmParams(): Record<string, string> {
+		const params = new URLSearchParams(window.location.search);
+		const out: Record<string, string> = {};
+		for (const key of ["utm_source", "utm_medium", "utm_campaign"]) {
+			const value = params.get(key);
+			if (value) out[key] = value;
+		}
+		return out;
+	}
+
+	document.querySelectorAll<HTMLFormElement>("form[data-variant]").forEach((form) => {
+		form.addEventListener("submit", async (event) => {
+			event.preventDefault();
+			const status = form.parentElement?.querySelector<HTMLParagraphElement>(".form-status");
+			const emailInput = form.querySelector<HTMLInputElement>('input[name="email"]');
+			const email = emailInput?.value ?? "";
+			const variant = form.dataset.variant ?? "";
+			const ctaKind = form.dataset.ctaKind ?? "waitlist";
+			const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+
+			if (submitButton) submitButton.disabled = true;
+			if (status) status.textContent = "";
+
+			try {
+				const response = await fetch("/api/waitlist", {
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					body: JSON.stringify({ email, variant, ctaKind, utm: utmParams() }),
+				});
+
+				if (!response.ok) throw new Error("request_failed");
+
+				track(ctaKind === "info-session" ? "info_session_click" : "waitlist_signup", {
+					variant,
+				});
+
+				if (status) status.textContent = "You're on the list — check your email.";
+				form.reset();
+			} catch {
+				if (status) status.textContent = "Something went wrong. Please try again.";
+			} finally {
+				if (submitButton) submitButton.disabled = false;
+			}
+		});
+	});
+</script>

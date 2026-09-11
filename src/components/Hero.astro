@@ -1,0 +1,28 @@
+---
+import type { Variant } from "../data/content";
+import WaitlistForm from "./WaitlistForm.astro";
+
+interface Props {
+	variant: Variant;
+}
+
+const { variant } = Astro.props;
+const { theme, hero } = variant;
+---
+
+<section class={`${theme.heroBg} ${theme.heroText} px-6 py-20 sm:py-28`}>
+	<div class="mx-auto max-w-3xl text-center">
+		<p class="mb-4 text-xs font-semibold tracking-[0.2em] uppercase opacity-70">
+			MS/MBA: Engineering Sciences — Harvard Business School × SEAS
+		</p>
+		<h1 class={`${theme.headingFont} text-4xl leading-tight font-bold text-balance sm:text-5xl`}>
+			{hero.headline}
+		</h1>
+		<p class="mx-auto mt-6 max-w-2xl text-lg opacity-90 sm:text-xl">
+			{hero.subhead}
+		</p>
+		<div class="mt-10">
+			<WaitlistForm variant={variant} placement="hero" />
+		</div>
+	</div>
+</section>

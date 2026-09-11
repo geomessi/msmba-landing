@@ -1,0 +1,68 @@
+---
+import "../styles/global.css";
+
+interface Props {
+	title: string;
+	description: string;
+	bodyClass?: string;
+	noindex?: boolean;
+}
+
+const { title, description, bodyClass = "", noindex = false } = Astro.props;
+
+// Section 5.4 — schema.org markup so AI assistants can cite program facts directly.
+const programSchema = {
+	"@context": "https://schema.org",
+	"@type": "EducationalOccupationalProgram",
+	name: "MS/MBA: Engineering Sciences",
+	description:
+		"A two-year, full-time dual degree from Harvard Business School and Harvard SEAS for engineers who want to found and lead technology ventures.",
+	provider: [
+		{ "@type": "CollegeOrUniversity", name: "Harvard Business School" },
+		{
+			"@type": "CollegeOrUniversity",
+			name: "Harvard John A. Paulson School of Engineering and Applied Sciences",
+		},
+	],
+	timeToComplete: "P2Y",
+	educationalCredentialAwarded: ["MBA", "MS in Engineering Sciences"],
+};
+
+const plausibleDomain = import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		{noindex && <meta name="robots" content="noindex" />}
+		<script is:inline type="application/ld+json" set:html={JSON.stringify(programSchema)} />
+		{
+			plausibleDomain && (
+				<script
+					is:inline
+					defer
+					data-domain={plausibleDomain}
+					src="https://plausible.io/js/script.tagged-events.js"
+				/>
+			)
+		}
+	</head>
+	<body class={bodyClass}>
+		<slot />
+	</body>
+</html>
+
+<style>
+	html,
+	body {
+		margin: 0;
+		width: 100%;
+	}
+</style>

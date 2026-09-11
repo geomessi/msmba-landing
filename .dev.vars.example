@@ -1,0 +1,3 @@
+# Copy to .dev.vars for local dev (wrangler pages dev reads this automatically).
+# In production, set as a secret: npx wrangler pages secret put LOOPS_API_KEY
+LOOPS_API_KEY=

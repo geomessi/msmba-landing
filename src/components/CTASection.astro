@@ -1,0 +1,21 @@
+---
+import type { Variant } from "../data/content";
+import WaitlistForm from "./WaitlistForm.astro";
+
+interface Props {
+	variant: Variant;
+}
+
+const { variant } = Astro.props;
+const { theme, hero } = variant;
+---
+
+<section class={`${theme.heroBg} ${theme.heroText} px-6 py-16 sm:py-20`}>
+	<div class="mx-auto max-w-2xl text-center">
+		<h2 class={`${theme.headingFont} text-2xl font-bold sm:text-3xl`}>{hero.headline}</h2>
+		<p class="mt-4 opacity-90">{hero.subhead}</p>
+		<div class="mt-8">
+			<WaitlistForm variant={variant} placement="cta" />
+		</div>
+	</div>
+</section>

@@ -1,0 +1,19 @@
+---
+import type { Variant } from "../data/content";
+
+interface Props {
+	variant: Variant;
+}
+
+const { variant } = Astro.props;
+const { theme, problem } = variant;
+---
+
+<section class="px-6 py-16 sm:py-20">
+	<div class="mx-auto max-w-2xl text-center">
+		<h2 class={`${theme.headingFont} ${theme.accent} text-2xl font-bold sm:text-3xl`}>
+			{problem.title}
+		</h2>
+		<p class="mt-4 text-lg text-black/70">{problem.body}</p>
+	</div>
+</section>

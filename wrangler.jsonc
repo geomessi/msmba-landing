@@ -1,0 +1,20 @@
+{
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	"compatibility_date": "2026-09-11",
+	"compatibility_flags": ["global_fetch_strictly_public"],
+	"name": "aifounder-msmba",
+	"main": "@astrojs/cloudflare/entrypoints/server",
+	"assets": {
+		"directory": "./dist",
+		"binding": "ASSETS"
+	},
+	"observability": {
+		"enabled": true
+	},
+	"kv_namespaces": [
+		{
+			"binding": "WAITLIST",
+			"id": "5dec9819f4eb4654bcff041f280f3880"
+		}
+	]
+}

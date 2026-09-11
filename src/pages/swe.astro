@@ -1,0 +1,8 @@
+---
+import VariantPage from "../components/VariantPage.astro";
+import { getVariant } from "../data/content";
+
+const variant = getVariant("swe")!;
+---
+
+<VariantPage variant={variant} />
