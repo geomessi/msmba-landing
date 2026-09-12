@@ -10,10 +10,129 @@ export interface FaqItem {
   answer: string;
 }
 
-export interface QuoteItem {
-  quote: string;
-  attribution: string;
-  isPlaceholder?: boolean;
+/**
+ * Real alumni of the program.
+ *
+ * Every field below is drawn from each person's own public LinkedIn profile —
+ * their stated title, employer, and their own description of what the company
+ * does. Nothing here is inferred, embellished, or written on their behalf.
+ *
+ * `quote` is intentionally null for everyone. The PRD (ICP C message strategy)
+ * calls for first-person alumni quotes, and those must come from the women
+ * themselves — writing words and attributing them to a named, findable person
+ * would be fabricating a testimonial. Fill `quote` only with text they have
+ * actually approved.
+ *
+ * `photo` points at /public/alumni/<file>. The cards fall back to initials when
+ * a file is missing, so the page is not broken while photos are pending.
+ *
+ * Before any of this goes on a public page, each person needs to agree to be
+ * featured by name and photo — see the launch checklist in the README.
+ */
+export interface Alum {
+  id: string;
+  name: string;
+  pronouns?: string;
+  /** Their relationship to the program, stated exactly as their profile does. */
+  credential: string;
+  /** Current title and employer. */
+  role: string;
+  company: string;
+  /** What they built or do, paraphrased from their own profile copy. */
+  detail: string;
+  /** Which PRD path this illustrates: founder / product / investor. */
+  paths: string[];
+  photo: string;
+  quote: string | null;
+}
+
+export const ALUMNI: Alum[] = [
+  {
+    id: "yinka-ogunbiyi",
+    name: "Yinka Ogunbiyi",
+    credential: "Harvard MS/MBA",
+    role: "Founder and CEO",
+    company: "HaloBraid",
+    detail:
+      "Building technology for textured hair. HaloBraid's braid-assist device helps stylists finish braids five times faster. Previously co-founded Desora, and researched nanotechnology at SEAS.",
+    paths: ["Founder", "Inventor"],
+    photo: "/alumni/yinka-ogunbiyi.jpg",
+    quote: null,
+  },
+  {
+    id: "ananya-zutshi",
+    name: "Ananya Zutshi",
+    pronouns: "she/her",
+    credential: "Harvard MBA, MS",
+    role: "Corporate Development",
+    company: "Caldera Therapeutics",
+    detail:
+      "Co-founded Guardian Bio (Y Combinator S22), combining regenerative medicine with immunotherapy for late-stage solid tumor patients, and led it as CEO for three years.",
+    paths: ["Founder", "Biotech"],
+    photo: "/alumni/ananya-zutshi.jpg",
+    quote: null,
+  },
+  {
+    id: "yarden-halperin",
+    name: "Yarden Halperin",
+    pronouns: "she/her",
+    credential: "Harvard MS/MBA",
+    role: "Product Manager",
+    company: "Google Cloud",
+    detail:
+      "Product at Google Cloud after nearly three years as a senior technical PM on EC2 networking at AWS. Angel investor, and Co-President of the Women's Student Association during the program.",
+    paths: ["Product", "Investor"],
+    photo: "/alumni/yarden-halperin.jpg",
+    quote: null,
+  },
+  {
+    id: "lindsay-dorf",
+    name: "Lindsay Dorf",
+    pronouns: "she/her",
+    credential: "Harvard MS/MBA",
+    role: "Head of Product",
+    company: "Houlihan Lokey",
+    detail:
+      "Leads product and design at Houlihan Lokey. Founded and ran Astor, a community approach to financial advice built to help women invest with confidence. Earlier, senior PM on Google Shopping.",
+    paths: ["Founder", "Product"],
+    photo: "/alumni/lindsay-dorf.jpg",
+    quote: null,
+  },
+  {
+    id: "shannon-kay",
+    name: "Shannon Kay",
+    pronouns: "she/her",
+    // Her own profile says she completed the FIRST YEAR of the dual degree
+    // before leaving to found Topline Pro — so she is deliberately not
+    // described as holding the degree. Confirm with her how she wants this
+    // framed before publishing.
+    credential: "Completed first year of the MS/MBA",
+    role: "Co-founder and COO",
+    company: "Topline Pro",
+    detail:
+      "Left after her first year to build Topline Pro, whose digital storefronts help service professionals get discovered and win business directly. Background in data, systems engineering, and product.",
+    paths: ["Founder"],
+    photo: "/alumni/shannon-kay.jpg",
+    quote: null,
+  },
+];
+
+/**
+ * Blockers that apply to every variant, because all three now feature these
+ * five real people by name. Rendered on-page so the page is visibly unfinished
+ * rather than quietly shippable.
+ */
+export const PRE_LAUNCH_BLOCKERS = [
+  "Written permission from each featured alum to appear by name and photo on a public page — a public LinkedIn profile is not consent to be used in program marketing",
+  "Photo rights: request a usable file from each person rather than saving her headshot off LinkedIn, since the photographer may hold the copyright",
+  "First-person quotes, written or approved by each alum — none have been drafted, deliberately",
+  "Confirm with Shannon Kay how she wants her year in the program described; her profile says she completed the first year before leaving to found Topline Pro",
+];
+
+export function getAlumni(ids: string[]): Alum[] {
+  return ids
+    .map((id) => ALUMNI.find((a) => a.id === id))
+    .filter((a): a is Alum => Boolean(a));
 }
 
 export interface Variant {
@@ -55,7 +174,10 @@ export interface Variant {
   };
   socialProof: {
     title: string;
-    quotes: QuoteItem[];
+    /** Alumni ids from ALUMNI, ordered and selected to suit this ICP. */
+    featuredAlumni: string[];
+    /** Optional program-level stat shown alongside the roster. */
+    stat?: { value: string; label: string };
   };
   objections: FaqItem[];
   communityAssets?: string[];
@@ -138,19 +260,10 @@ export const VARIANTS: Variant[] = [
       ],
     },
     socialProof: {
+      // ICP A wants proof the degree opens doors rather than closing them, so
+      // this ordering leads with established institutional roles before founders.
       title: "Where graduates go",
-      quotes: [
-        {
-          quote: "[PLACEHOLDER — replace with a verified alumni outcome or quote before launch]",
-          attribution: "[PLACEHOLDER] Alumni name, grad year, current role",
-          isPlaceholder: true,
-        },
-        {
-          quote: "[PLACEHOLDER — replace with a verified alumni outcome or quote before launch]",
-          attribution: "[PLACEHOLDER] Alumni name, grad year, current role",
-          isPlaceholder: true,
-        },
-      ],
+      featuredAlumni: ["lindsay-dorf", "yarden-halperin", "ananya-zutshi", "yinka-ogunbiyi"],
     },
     objections: [
       {
@@ -201,19 +314,14 @@ export const VARIANTS: Variant[] = [
       ],
     },
     socialProof: {
+      // ICP B needs to see builders who stayed builders: founders first, then
+      // deep technical product work at companies they respect.
       title: "What graduates go on to do",
-      quotes: [
-        {
-          quote:
-            "Alumni founders from this program have gone on to raise over $300M in venture funding.",
-          attribution: "Program-level outcome (PRD v1.0) — pair with named founder stories before launch",
-        },
-        {
-          quote: "[PLACEHOLDER — replace with a verified founder/PM alumni quote before launch]",
-          attribution: "[PLACEHOLDER] Alumni name, grad year, current role",
-          isPlaceholder: true,
-        },
-      ],
+      featuredAlumni: ["yinka-ogunbiyi", "shannon-kay", "ananya-zutshi", "yarden-halperin"],
+      stat: {
+        value: "$300M+",
+        label: "Venture funding raised by alumni founders",
+      },
     },
     objections: [
       {
@@ -269,30 +377,25 @@ export const VARIANTS: Variant[] = [
       ],
     },
     socialProof: {
-      title: "Alumni who've done it",
-      quotes: [
-        {
-          quote: "[PLACEHOLDER — 1–2 sentence quote from a women alum, founder/PM/investor path]",
-          attribution: "[PLACEHOLDER] Alumni name, grad year, current role",
-          isPlaceholder: true,
-        },
-        {
-          quote: "[PLACEHOLDER — 1–2 sentence quote from a women alum, founder/PM/investor path]",
-          attribution: "[PLACEHOLDER] Alumni name, grad year, current role",
-          isPlaceholder: true,
-        },
-        {
-          quote: "[PLACEHOLDER — 1–2 sentence quote from a women alum, founder/PM/investor path]",
-          attribution: "[PLACEHOLDER] Alumni name, grad year, current role",
-          isPlaceholder: true,
-        },
+      // "Not as a diversity footnote, but as the main story" — so ICP C shows
+      // the full roster, founder and product and investor paths together.
+      title: "Women who've done it",
+      featuredAlumni: [
+        "yinka-ogunbiyi",
+        "ananya-zutshi",
+        "yarden-halperin",
+        "lindsay-dorf",
+        "shannon-kay",
       ],
     },
     objections: [
       {
+        // No placeholder text in this answer: it is emitted into the FAQPage
+        // schema, so anything written here is what AI assistants will quote as
+        // the program's answer. Add the cohort stat once it's confirmed.
         question: "Will I be one of the only women in a technical program at HBS?",
         answer:
-          "[PLACEHOLDER — insert real cohort gender composition stat once available.] The program has a named women's representative and an alumni network of women founders, PMs, and investors — ask to be connected directly.",
+          "The program has a dedicated women's representative, and its alumni network includes women who have founded venture-backed companies, led product at Google and AWS, and moved into investing. Ask to be connected with any of them directly before you apply.",
       },
       {
         question: "Is the dual degree worth it, or does the MBA alone open the same doors?",
@@ -300,9 +403,10 @@ export const VARIANTS: Variant[] = [
           "The technical credential differentiates you, especially for VC, founder, and senior IC paths — it signals you can build, not just manage the people who build.",
       },
     ],
+    // ICP C only — the shared blockers in PRE_LAUNCH_BLOCKERS apply on top.
     communityAssets: [
-      "[PLACEHOLDER] Women's Representative — name, title, and direct contact path",
-      "[PLACEHOLDER] Women in cohort — % or relevant stat, if available",
+      "Women's Representative — name, title, and direct contact path. Note: Yarden Halperin was Co-President of the Women's Student Association as a student, which is a different and past role — don't conflate the two",
+      "Women in cohort — % or relevant stat, if appropriate to share. Once confirmed, add it to the \"Will I be one of the only women\" FAQ answer, which currently makes the community case without a number",
       "Link to the broader Women @ HBS community",
     ],
   },
