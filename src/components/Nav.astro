@@ -1,0 +1,82 @@
+---
+import type { Variant } from "../data/content";
+
+interface Props {
+	variant: Variant;
+}
+
+const { variant } = Astro.props;
+
+const links = [
+	{ label: "Why this program", href: "#program" },
+	{ label: "Outcomes", href: "#outcomes" },
+	{ label: "FAQ", href: "#faq" },
+];
+---
+
+<header
+	id="site-nav"
+	class={`sticky top-0 z-50 border-b ${variant.theme.rule} bg-paper/85 backdrop-blur-md transition-shadow duration-300`}
+>
+	<div class="mx-auto flex max-w-[1400px] items-center justify-between gap-6 px-5 py-4 sm:px-8">
+		<!-- Shield + program lockup -->
+		<a href="#top" class="group flex items-center gap-3.5" aria-label="MS/MBA: Engineering Sciences">
+			<span
+				class="grid h-11 w-11 shrink-0 place-items-center bg-crimson font-editorial text-2xl leading-none text-white"
+				aria-hidden="true">H</span
+			>
+			<span class="flex flex-col leading-none">
+				<span class="text-xl font-bold tracking-tight text-ink">MS/MBA</span>
+				<!-- Dropped on narrow screens, where it wraps to two lines and
+					 doubles the nav height for no gain. -->
+				<span class="eyebrow mt-1 hidden whitespace-nowrap text-ink-muted sm:block">
+					Engineering Sciences
+				</span>
+			</span>
+		</a>
+
+		<nav class="flex items-center gap-7 sm:gap-9">
+			<ul class="hidden items-center gap-7 md:flex lg:gap-9">
+				{
+					links.map((link) => (
+						<li>
+							<a
+								href={link.href}
+								class="link-underline text-[0.9375rem] font-medium text-ink-soft transition-colors hover:text-ink"
+							>
+								{link.label}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+			<a
+				href="#waitlist"
+				data-nav-cta
+				class="group flex shrink-0 items-center gap-1.5 border-b-2 border-crimson pb-0.5 text-sm font-bold whitespace-nowrap text-ink sm:text-[0.9375rem]"
+			>
+				<!-- Shortened on narrow screens so the nav stays one line tall. -->
+				<span class="sm:hidden">{variant.hero.ctaKind === "waitlist" ? "Waitlist" : "Info"}</span>
+				<span class="hidden sm:inline">
+					{variant.hero.ctaKind === "waitlist" ? "Join the waitlist" : "Request info"}
+				</span>
+				<span
+					class="text-crimson transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+					aria-hidden="true">↗</span
+				>
+			</a>
+		</nav>
+	</div>
+</header>
+
+<script>
+	// Lift the nav with a shadow once the hero starts scrolling away.
+	const nav = document.getElementById("site-nav");
+	if (nav) {
+		const onScroll = () => {
+			nav.classList.toggle("shadow-[0_1px_20px_-8px_rgba(22,36,61,0.35)]", window.scrollY > 12);
+		};
+		onScroll();
+		window.addEventListener("scroll", onScroll, { passive: true });
+	}
+</script>

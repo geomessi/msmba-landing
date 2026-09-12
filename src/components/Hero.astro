@@ -1,28 +1,134 @@
 ---
 import type { Variant } from "../data/content";
-import WaitlistForm from "./WaitlistForm.astro";
+import { sentenceLines } from "../lib/type";
+import CodeCollage from "./visuals/CodeCollage.astro";
+import CredentialCollage from "./visuals/CredentialCollage.astro";
+import CommunityCollage from "./visuals/CommunityCollage.astro";
 
 interface Props {
 	variant: Variant;
 }
 
 const { variant } = Astro.props;
-const { theme, hero } = variant;
+const { hero, theme } = variant;
+
+const Collage =
+	variant.heroVisual === "code"
+		? CodeCollage
+		: variant.heroVisual === "credential"
+			? CredentialCollage
+			: CommunityCollage;
+
+// ICP B leads with the grotesk and turns to serif; A and C invert that, opening
+// in serif for a more institutional/editorial register.
+const leadClass =
+	theme.displayLean === "grotesk"
+		? "font-display font-extrabold tracking-[-0.035em]"
+		: "font-display font-bold tracking-[-0.03em]";
 ---
 
-<section class={`${theme.heroBg} ${theme.heroText} px-6 py-20 sm:py-28`}>
-	<div class="mx-auto max-w-3xl text-center">
-		<p class="mb-4 text-xs font-semibold tracking-[0.2em] uppercase opacity-70">
-			MS/MBA: Engineering Sciences — Harvard Business School × SEAS
-		</p>
-		<h1 class={`${theme.headingFont} text-4xl leading-tight font-bold text-balance sm:text-5xl`}>
-			{hero.headline}
-		</h1>
-		<p class="mx-auto mt-6 max-w-2xl text-lg opacity-90 sm:text-xl">
-			{hero.subhead}
-		</p>
-		<div class="mt-10">
-			<WaitlistForm variant={variant} placement="hero" />
+<section id="top" class="relative grid items-stretch lg:grid-cols-[1fr_0.92fr]">
+	<!-- Copy column. The generous left indent is the editorial move: the hero text
+		 sits further in than the nav lockup above it. -->
+	<div
+		class="flex flex-col justify-center px-5 py-16 sm:px-8 sm:py-24 lg:pr-16 lg:pl-[max(4.5rem,calc((100vw-1400px)/2+4.5rem))]"
+	>
+		<!-- The headline gets the full column; only the running copy is measured. -->
+		<div class="max-w-[34rem] lg:max-w-none">
+			<p class="eyebrow flex items-center gap-3 text-crimson">
+				<span class="h-px w-8 bg-crimson" aria-hidden="true"></span>
+				Harvard Business School × SEAS
+			</p>
+
+			<h1 class="mt-7 text-hero leading-[0.95] text-ink [text-wrap:pretty]">
+				{
+					sentenceLines(hero.headlineLead).map((line) => (
+						<span class={`block ${leadClass}`}>{line}</span>
+					))
+				}
+				<span class="mt-1 block font-editorial leading-[1.02] italic">
+					{hero.headlineEmphasis}
+				</span>
+			</h1>
+
+			<p class="mt-8 max-w-[32rem] text-lg leading-relaxed text-ink-soft sm:text-xl">
+				{hero.subhead}
+			</p>
+
+			<div class="mt-11 flex flex-wrap items-center gap-x-8 gap-y-4">
+				<a
+					href="#waitlist"
+					class={`${theme.cta} group inline-flex items-center gap-2.5 px-7 py-4 text-[0.9375rem] font-bold`}
+				>
+					{hero.ctaLabel}
+					<span
+						class="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+						aria-hidden="true">↗</span
+					>
+				</a>
+				<a
+					href="#program"
+					class="group inline-flex items-center gap-2 text-[0.9375rem] font-bold text-ink"
+				>
+					<span class="link-underline">{hero.secondaryCtaLabel}</span>
+					<span
+						class="text-crimson transition-transform duration-300 group-hover:translate-y-0.5"
+						aria-hidden="true">↓</span
+					>
+				</a>
+			</div>
+		</div>
+	</div>
+
+	<!-- Visual column: grid field + tilted collage -->
+	<div
+		class={`grid-field relative flex items-center border-t ${theme.rule} px-6 py-14 sm:px-10 lg:border-t-0 lg:border-l lg:py-20`}
+	>
+		<!-- @container so collage type scales with the panel rather than the
+			 viewport — the compositions are proportional at any width. -->
+		<div class="scroll-tilt @container w-full" data-scroll-tilt>
+			<div>
+				<Collage />
+			</div>
 		</div>
 	</div>
 </section>
+
+<script>
+	// container-scroll-animation, rebuilt without Framer Motion: map the hero's
+	// scroll progress to rotateX/translateY so the collage settles flat as the
+	// reader moves down the page.
+	const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+	const target = document.querySelector<HTMLElement>("[data-scroll-tilt]");
+
+	if (target && !reduced) {
+		let queued = false;
+
+		const update = () => {
+			queued = false;
+			const rect = target.getBoundingClientRect();
+			// 0 when the element sits at the bottom of the viewport, 1 once it has
+			// scrolled up past roughly half the viewport.
+			const raw = 1 - (rect.top + rect.height * 0.35) / window.innerHeight;
+			const progress = Math.min(Math.max(raw, 0), 1);
+			const eased = progress * progress * (3 - 2 * progress);
+
+			// Deliberately restrained. The hero visual is above the fold, so it must
+			// look pristine at rest; monospaced code compresses visibly past ~4deg.
+			// The tilt is a settle, not the effect itself.
+			target.style.setProperty("--tilt", `${(1 - eased) * 3.5}deg`);
+			target.style.setProperty("--lift", `${(1 - eased) * 12}px`);
+			target.style.setProperty("--tilt-scale", `${0.985 + eased * 0.015}`);
+		};
+
+		const onScroll = () => {
+			if (queued) return;
+			queued = true;
+			requestAnimationFrame(update);
+		};
+
+		update();
+		window.addEventListener("scroll", onScroll, { passive: true });
+		window.addEventListener("resize", onScroll, { passive: true });
+	}
+</script>

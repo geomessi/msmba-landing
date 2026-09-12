@@ -1,0 +1,63 @@
+---
+// ICP B — "builders in the room, code on screens, but in a Harvard setting."
+// Geometric slabs behind a terminal window; no photography required.
+// Composition rule: crimson reads top-left, navy bottom-right, window bridges
+// them on the diagonal — each element stays legible rather than stacking up.
+---
+
+<div class="relative aspect-[4/3] w-full">
+	<!-- Crimson slab, top-left, clear of the window -->
+	<div
+		class="absolute top-[4%] left-[7%] h-[33%] w-[30%] rotate-[-7deg] bg-crimson-bright shadow-[0_18px_50px_-22px_rgba(138,21,38,0.5)]"
+	>
+	</div>
+
+	<!-- Navy slab, bottom-right -->
+	<div
+		class="absolute top-[60%] left-[52%] h-[34%] w-[38%] rotate-[6deg] bg-ink shadow-[0_18px_50px_-22px_rgba(22,36,61,0.55)]"
+	>
+	</div>
+
+	<!-- Terminal window, bridging the diagonal -->
+	<figure
+		class="absolute top-[24%] left-[17%] w-[74%] -rotate-[2deg] overflow-hidden rounded-lg bg-[#0f1b2e] shadow-[0_30px_70px_-22px_rgba(22,36,61,0.6)]"
+	>
+		<div class="flex items-center gap-[1.6cqw] bg-white/[0.07] px-[2.6cqw] py-[1.7cqw]">
+			<span class="flex gap-[1cqw]" aria-hidden="true">
+				<span class="aspect-square w-[1.5cqw] rounded-full bg-white/25"></span>
+				<span class="aspect-square w-[1.5cqw] rounded-full bg-white/25"></span>
+				<span class="aspect-square w-[1.5cqw] rounded-full bg-white/25"></span>
+			</span>
+			<figcaption
+				class="font-mono text-[clamp(0.5rem,1.55cqw,0.6875rem)] tracking-wide text-white/45"
+			>
+				venture_os / strategy
+			</figcaption>
+		</div>
+
+		<pre
+			class="overflow-hidden px-[3cqw] py-[3.6cqw] font-mono text-[clamp(0.5rem,2cqw,0.9rem)] leading-[2.1]"><code><span class="select-none text-white/25">01  </span><span class="text-[#f692ce]">const</span> <span class="text-[#7dd3fc]">ambition</span> <span class="text-white/55">=</span> <span class="text-[#fdba74]">"founder"</span>
+<span class="select-none text-white/25">02  </span><span class="text-[#f692ce]">const</span> <span class="text-[#7dd3fc]">advantage</span> <span class="text-white/55">=</span> <span class="text-[#fdba74]">"technical"</span>
+<span class="select-none text-white/25">03  </span>
+<span class="select-none text-white/25">04  </span><span class="text-[#f692ce]">return</span> <span class="text-[#7dd3fc]">build</span><span class="text-white/55">(</span><span class="text-[#a5f3c0]">future</span><span class="text-white/55">)</span>
+<span class="select-none text-white/25">05  </span><span class="caret text-white/70">_</span></code></pre>
+	</figure>
+</div>
+
+<style>
+	.caret {
+		animation: blink 1.2s step-end infinite;
+	}
+
+	@keyframes blink {
+		50% {
+			opacity: 0;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.caret {
+			animation: none;
+		}
+	}
+</style>

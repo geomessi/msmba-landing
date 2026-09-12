@@ -6,38 +6,61 @@ interface Props {
 }
 
 const { variant } = Astro.props;
-const { theme, socialProof, communityAssets } = variant;
+const { socialProof, communityAssets, theme } = variant;
 ---
 
-<section class="px-6 py-16 sm:py-20">
-	<div class="mx-auto max-w-3xl">
-		<h2 class={`${theme.headingFont} text-2xl font-bold sm:text-3xl`}>{socialProof.title}</h2>
-		<div class="mt-8 grid gap-6 sm:grid-cols-2">
-			{
-				socialProof.quotes.map((item) => (
-					<blockquote
-						class={`rounded-lg border p-6 ${item.isPlaceholder ? "border-dashed border-black/20 bg-amber-50" : "border-black/10 bg-white"}`}
-					>
-						<p class="text-black/80 italic">"{item.quote}"</p>
-						<footer class="mt-3 text-sm font-medium text-black/50">{item.attribution}</footer>
-					</blockquote>
-				))
-			}
-		</div>
+<section id="outcomes" class={`border-t ${theme.rule} px-5 py-20 sm:px-8 sm:py-24`}>
+	<div class="mx-auto max-w-[1400px]">
+		<div class="grid gap-8 lg:grid-cols-[10rem_1fr] lg:gap-20">
+			<p class="eyebrow shrink-0 text-ink-muted lg:pt-5">Outcomes</p>
 
-		{
-			communityAssets && communityAssets.length > 0 && (
-				<div class="mt-10 rounded-lg border border-dashed border-black/20 bg-amber-50 p-6">
-					<p class="text-sm font-semibold text-black/60 uppercase">
-						Community assets — confirm before launch
-					</p>
-					<ul class="mt-3 list-disc space-y-1 pl-5 text-black/70">
-						{communityAssets.map((asset) => (
-							<li>{asset}</li>
-						))}
-					</ul>
+			<div>
+				<h2 class="max-w-2xl font-editorial text-section leading-[1.15] text-balance text-ink">
+					{socialProof.title}
+				</h2>
+
+				<div class="mt-10 grid gap-6 sm:grid-cols-2">
+					{
+						socialProof.quotes.map((item) => (
+							<blockquote
+								class={`reveal relative flex flex-col justify-between p-8 ${
+									item.isPlaceholder
+										? "border border-dashed border-crimson/35 bg-crimson/[0.04]"
+										: `border ${theme.rule} bg-white shadow-[0_20px_50px_-32px_rgba(22,36,61,0.35)]`
+								}`}
+							>
+								{/* Oversized serif quote mark as a graphic element */}
+								<span
+									class="pointer-events-none absolute top-3 right-5 font-editorial text-7xl leading-none text-crimson/12 select-none"
+									aria-hidden="true"
+								>
+									”
+								</span>
+								<p class="relative font-editorial text-2xl leading-snug text-ink">{item.quote}</p>
+								<footer class="eyebrow mt-7 text-ink-muted">{item.attribution}</footer>
+							</blockquote>
+						))
+					}
 				</div>
-			)
-		}
+
+				{
+					communityAssets && communityAssets.length > 0 && (
+						<div class="reveal mt-8 border border-dashed border-crimson/35 bg-crimson/[0.04] p-8">
+							<p class="eyebrow text-crimson">Community assets — confirm before launch</p>
+							<ul class="mt-5 space-y-3">
+								{communityAssets.map((asset) => (
+									<li class="flex gap-4 text-ink-soft">
+										<span class="text-crimson" aria-hidden="true">
+											—
+										</span>
+										<span>{asset}</span>
+									</li>
+								))}
+							</ul>
+						</div>
+					)
+				}
+			</div>
+		</div>
 	</div>
 </section>

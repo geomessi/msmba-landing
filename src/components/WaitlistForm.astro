@@ -7,16 +7,17 @@ interface Props {
 }
 
 const { variant, placement } = Astro.props;
-const { theme, hero } = variant;
+const { hero } = variant;
 const formId = `waitlist-${variant.slug}-${placement}`;
 ---
 
-<div class="mx-auto max-w-md">
+<div class="w-full max-w-lg">
 	<form
 		id={formId}
-		class="flex flex-col gap-3 sm:flex-row"
+		class="group flex flex-col gap-3 sm:flex-row sm:items-stretch"
 		data-variant={variant.slug}
 		data-cta-kind={hero.ctaKind}
+		novalidate
 	>
 		<label class="sr-only" for={`${formId}-email`}>Email address</label>
 		<input
@@ -24,17 +25,23 @@ const formId = `waitlist-${variant.slug}-${placement}`;
 			name="email"
 			type="email"
 			required
+			autocomplete="email"
 			placeholder="you@email.com"
-			class="w-full rounded-md border border-black/10 bg-white px-4 py-3 text-base text-black placeholder:text-black/40 focus:outline-2 focus:outline-offset-2"
+			class="w-full border-b-2 border-white/25 bg-transparent px-0 py-3.5 text-lg text-white transition-colors duration-300 placeholder:text-white/35 focus:border-white focus:outline-none"
 		/>
 		<button
 			type="submit"
-			class={`${theme.accentText} shrink-0 rounded-md px-6 py-3 text-base font-semibold transition-opacity hover:opacity-90`}
+			class="btn-primary group/btn inline-flex shrink-0 items-center justify-center gap-2.5 bg-white px-7 py-4 text-[0.9375rem] font-bold !text-ink"
 		>
-			{hero.ctaLabel}
+			<span class="submit-label">{hero.ctaLabel}</span>
+			<span
+				class="transition-transform duration-300 group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5"
+				aria-hidden="true">↗</span
+			>
 		</button>
 	</form>
-	<p class="form-status mt-3 text-sm" role="status"></p>
+
+	<p class="form-status mt-4 min-h-6 text-sm text-white/60" role="status" aria-live="polite"></p>
 </div>
 
 <script>
@@ -53,14 +60,24 @@ const formId = `waitlist-${variant.slug}-${placement}`;
 	document.querySelectorAll<HTMLFormElement>("form[data-variant]").forEach((form) => {
 		form.addEventListener("submit", async (event) => {
 			event.preventDefault();
+
 			const status = form.parentElement?.querySelector<HTMLParagraphElement>(".form-status");
 			const emailInput = form.querySelector<HTMLInputElement>('input[name="email"]');
-			const email = emailInput?.value ?? "";
+			const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+			const label = form.querySelector<HTMLSpanElement>(".submit-label");
+			const email = emailInput?.value.trim() ?? "";
 			const variant = form.dataset.variant ?? "";
 			const ctaKind = form.dataset.ctaKind ?? "waitlist";
-			const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"]');
 
+			if (!emailInput?.checkValidity()) {
+				if (status) status.textContent = "That email doesn't look right — mind checking it?";
+				emailInput?.focus();
+				return;
+			}
+
+			const originalLabel = label?.textContent ?? "";
 			if (submitButton) submitButton.disabled = true;
+			if (label) label.textContent = "Sending…";
 			if (status) status.textContent = "";
 
 			try {
@@ -72,15 +89,19 @@ const formId = `waitlist-${variant.slug}-${placement}`;
 
 				if (!response.ok) throw new Error("request_failed");
 
-				track(ctaKind === "info-session" ? "info_session_click" : "waitlist_signup", {
-					variant,
-				});
+				track(ctaKind === "info-session" ? "info_session_click" : "waitlist_signup", { variant });
 
-				if (status) status.textContent = "You're on the list — check your email.";
+				if (status) status.textContent = "You're on the list. Check your email for a confirmation.";
+				if (label) label.textContent = "Done";
 				form.reset();
+				// Leave the confirmed state visible rather than snapping back.
+				window.setTimeout(() => {
+					if (label) label.textContent = originalLabel;
+					if (submitButton) submitButton.disabled = false;
+				}, 2400);
 			} catch {
 				if (status) status.textContent = "Something went wrong. Please try again.";
-			} finally {
+				if (label) label.textContent = originalLabel;
 				if (submitButton) submitButton.disabled = false;
 			}
 		});

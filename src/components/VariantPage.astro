@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import Nav from "./Nav.astro";
 import Hero from "./Hero.astro";
 import ProblemSection from "./ProblemSection.astro";
 import ProgramSection from "./ProgramSection.astro";
@@ -7,6 +8,7 @@ import SocialProof from "./SocialProof.astro";
 import ProgramSnapshot from "./ProgramSnapshot.astro";
 import FAQSection from "./FAQSection.astro";
 import CTASection from "./CTASection.astro";
+import Footer from "./Footer.astro";
 import type { Variant } from "../data/content";
 
 interface Props {
@@ -15,13 +17,14 @@ interface Props {
 
 const { variant } = Astro.props;
 
-// PRD 5.4 — full official program name must appear in title, meta description,
-// and H1 (H1 lives in Hero.astro).
+// PRD 5.4 — the full official program name must appear in the title, the meta
+// description, and the H1 (the H1 lives in Hero.astro).
 const title = `${variant.hero.headline} | MS/MBA: Engineering Sciences — Harvard HBS × SEAS`;
 const description = `The MS/MBA: Engineering Sciences is a two-year dual degree from Harvard Business School and Harvard SEAS. ${variant.hero.subhead}`;
 ---
 
-<Layout title={title} description={description} bodyClass={variant.theme.bg}>
+<Layout title={title} description={description} bodyClass={variant.theme.surface}>
+	<Nav variant={variant} />
 	<main>
 		<Hero variant={variant} />
 		<ProblemSection variant={variant} />
@@ -31,4 +34,30 @@ const description = `The MS/MBA: Engineering Sciences is a two-year dual degree 
 		<FAQSection variant={variant} />
 		<CTASection variant={variant} />
 	</main>
+	<Footer />
 </Layout>
+
+<script>
+	// Scroll-reveal for section content. IntersectionObserver so it costs nothing
+	// on load; reduced-motion users get everything visible immediately via CSS.
+	const items = document.querySelectorAll(".reveal");
+	if (items.length && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+		const observer = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					if (!entry.isIntersecting) continue;
+					// Stagger siblings slightly so rows cascade rather than pop together.
+					const siblings = Array.from(entry.target.parentElement?.children ?? []);
+					const index = Math.max(siblings.indexOf(entry.target), 0);
+					(entry.target as HTMLElement).style.transitionDelay = `${Math.min(index, 5) * 70}ms`;
+					entry.target.classList.add("is-visible");
+					observer.unobserve(entry.target);
+				}
+			},
+			{ rootMargin: "0px 0px -12% 0px", threshold: 0.12 },
+		);
+		items.forEach((item) => observer.observe(item));
+	} else {
+		items.forEach((item) => item.classList.add("is-visible"));
+	}
+</script>

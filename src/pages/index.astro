@@ -7,18 +7,39 @@ import { VARIANTS } from "../data/content";
 	title="MS/MBA Landing Page Variants — Internal Review"
 	description="Internal review index for the three MS/MBA: Engineering Sciences landing page variants."
 	noindex
+	bodyClass="bg-paper"
 >
-	<main class="mx-auto max-w-2xl px-6 py-20">
-		<h1 class="text-2xl font-bold">MS/MBA Landing Page Variants</h1>
-		<p class="mt-2 text-black/60">Internal review index — not a public-facing page.</p>
-		<ul class="mt-8 space-y-4">
+	<main class="mx-auto max-w-3xl px-5 py-20 sm:px-8 sm:py-28">
+		<p class="eyebrow text-crimson">Internal — not public facing</p>
+		<h1 class="mt-6 font-editorial text-section leading-tight text-ink">
+			Landing page variants
+		</h1>
+		<p class="mt-4 max-w-xl text-lg text-ink-soft">
+			Three ICP-locked pages sharing one section architecture, so the variable under test is the
+			message rather than the layout.
+		</p>
+
+		<ul class="mt-14 border-t border-rule">
 			{
 				VARIANTS.map((variant) => (
-					<li class="rounded-lg border border-black/10 p-5">
-						<a href={`/${variant.slug}`} class="text-lg font-semibold underline underline-offset-2">
-							{variant.icpLabel}
+					<li class="border-b border-rule">
+						<a href={`/${variant.slug}`} class="group flex items-baseline gap-6 py-7 sm:gap-10">
+							<span class="eyebrow shrink-0 text-crimson">{variant.icpLabel.split(" — ")[0]}</span>
+							<span class="flex-1">
+								<span class="block font-editorial text-2xl text-ink transition-transform duration-300 group-hover:translate-x-1">
+									{variant.hero.headline}
+								</span>
+								<span class="mt-1 block text-ink-muted">
+									{variant.personaName} · {variant.hero.ctaLabel}
+								</span>
+							</span>
+							<span
+								class="shrink-0 text-crimson transition-transform duration-300 group-hover:translate-x-1"
+								aria-hidden="true"
+							>
+								→
+							</span>
 						</a>
-						<p class="mt-1 text-black/60">{variant.hero.headline}</p>
 					</li>
 				))
 			}

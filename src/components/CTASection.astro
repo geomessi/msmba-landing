@@ -1,5 +1,6 @@
 ---
 import type { Variant } from "../data/content";
+import { sentenceLines } from "../lib/type";
 import WaitlistForm from "./WaitlistForm.astro";
 
 interface Props {
@@ -7,15 +8,40 @@ interface Props {
 }
 
 const { variant } = Astro.props;
-const { theme, hero } = variant;
+const { hero } = variant;
 ---
 
-<section class={`${theme.heroBg} ${theme.heroText} px-6 py-16 sm:py-20`}>
-	<div class="mx-auto max-w-2xl text-center">
-		<h2 class={`${theme.headingFont} text-2xl font-bold sm:text-3xl`}>{hero.headline}</h2>
-		<p class="mt-4 opacity-90">{hero.subhead}</p>
-		<div class="mt-8">
-			<WaitlistForm variant={variant} placement="cta" />
+<section id="waitlist" class="relative overflow-hidden bg-ink px-5 py-24 sm:px-8 sm:py-32">
+	<!-- Crimson bleed in the corner, echoing the hero collage -->
+	<div
+		class="pointer-events-none absolute -top-24 -right-24 h-80 w-80 rotate-12 bg-crimson/25 blur-[100px]"
+		aria-hidden="true"
+	>
+	</div>
+
+	<div class="relative mx-auto max-w-[1400px]">
+		<div class="grid gap-12 lg:grid-cols-2 lg:items-end lg:gap-20">
+			<div>
+				<p class="eyebrow flex items-center gap-3 text-white/45">
+					<span class="h-px w-8 bg-white/30" aria-hidden="true"></span>
+					{hero.ctaKind === "waitlist" ? "Join the waitlist" : "Request an info session"}
+				</p>
+				<h2 class="mt-7 text-[clamp(2rem,4.5vw,3.5rem)] leading-[1.04] text-white [text-wrap:pretty]">
+					{
+						sentenceLines(hero.headlineLead).map((line) => (
+							<span class="block font-display font-extrabold tracking-[-0.03em]">{line}</span>
+						))
+					}
+					<span class="mt-1 block font-editorial italic">{hero.headlineEmphasis}</span>
+				</h2>
+			</div>
+
+			<div class="lg:pb-3">
+				<p class="mb-8 max-w-md text-lg leading-relaxed text-white/65">
+					Add your email and we'll follow up with program details and next steps. No obligation.
+				</p>
+				<WaitlistForm variant={variant} placement="cta" />
+			</div>
 		</div>
 	</div>
 </section>

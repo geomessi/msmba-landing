@@ -22,19 +22,29 @@ export interface Variant {
   icpLabel: string;
   personaName: string;
   theme: {
-    bg: string;
-    heroBg: string;
-    heroText: string;
-    accent: string;
-    accentText: string;
-    headingFont: string;
+    /** Page surface — cool paper for A/B, warm for C. */
+    surface: string;
+    /** Hairline rule color, tuned to the surface temperature. */
+    rule: string;
+    /** Primary CTA: navy by default, crimson for the warmer ICP C. */
+    cta: string;
+    /** Whether the display headline leans serif (A, C) or grotesk (B). */
+    displayLean: "serif" | "grotesk";
   };
   hero: {
+    /** Full headline — drives <title>, meta description, and the H1 text. */
     headline: string;
+    /** Set in the heavy grotesk. */
+    headlineLead: string;
+    /** Set in the editorial serif italic — the typographic turn. */
+    headlineEmphasis: string;
     subhead: string;
     ctaLabel: string;
     ctaKind: CtaKind;
+    secondaryCtaLabel: string;
   };
+  /** Each ICP gets its own hero collage, per the PRD's per-variant visual tone. */
+  heroVisual: "credential" | "code" | "community";
   problem: {
     title: string;
     body: string;
@@ -51,7 +61,14 @@ export interface Variant {
   communityAssets?: string[];
 }
 
-// Section 4 — same across all variants
+// Section 4 — identical across all variants. Set as oversized numerals so the
+// three facts that matter most read at a glance.
+export const PROGRAM_STATS = [
+  { value: "30", unit: "", label: "Students per cohort" },
+  { value: "2", unit: "yrs", label: "Full-time, on campus" },
+  { value: "2", unit: "", label: "Degrees conferred" },
+];
+
 export const PROGRAM_SNAPSHOT = {
   cohortSize: "30 students",
   duration: "2 years, full-time, on campus",
@@ -91,20 +108,22 @@ export const VARIANTS: Variant[] = [
     icpLabel: "ICP A — The Parent",
     personaName: "The Strategic Parent",
     theme: {
-      bg: "bg-white",
-      heroBg: "bg-[#A51C30]",
-      heroText: "text-white",
-      accent: "text-[#A51C30]",
-      accentText: "bg-[#A51C30] text-white",
-      headingFont: "font-serif",
+      surface: "bg-paper",
+      rule: "border-rule",
+      cta: "btn-primary",
+      displayLean: "serif",
     },
     hero: {
       headline: "Two Degrees. Two Institutions. One Rare Path.",
+      headlineLead: "Two degrees. Two institutions.",
+      headlineEmphasis: "One rare path.",
       subhead:
         "Your child already knows how to build. The MS/MBA equips them to lead what they build — with an MBA from HBS and an MS in Engineering Sciences from SEAS.",
-      ctaLabel: "Request an Info Session",
+      ctaLabel: "Request an info session",
       ctaKind: "info-session",
+      secondaryCtaLabel: "See where graduates go",
     },
+    heroVisual: "credential",
     problem: {
       title: "Is this program serious enough?",
       body: "Prospective students — and the parents helping them decide — often can't tell this apart from an MBA with a few CS electives bolted on. It's a fair question to ask before recommending two years and a rare opportunity cost.",
@@ -152,20 +171,22 @@ export const VARIANTS: Variant[] = [
     icpLabel: "ICP B — The SWE Pivot",
     personaName: "The Builder Who Wants to Lead",
     theme: {
-      bg: "bg-white",
-      heroBg: "bg-[#001A3A]",
-      heroText: "text-white",
-      accent: "text-[#001A3A]",
-      accentText: "bg-[#A51C30] text-white",
-      headingFont: "font-sans",
+      surface: "bg-paper",
+      rule: "border-rule",
+      cta: "btn-primary",
+      displayLean: "grotesk",
     },
     hero: {
       headline: "You Built It. Now Learn to Run It.",
+      headlineLead: "You built it.",
+      headlineEmphasis: "Now learn to run it.",
       subhead:
-        "The MS/MBA: Engineering Sciences is a two-year Harvard program for engineers who want to found companies, lead products, and make 'how to build it' decisions at the table — not take orders from it.",
-      ctaLabel: "Join the Waitlist",
+        "The MS/MBA: Engineering Sciences is a two-year Harvard program for engineers who want to found companies, lead products, and make “how to build it” decisions at the table — not take orders from it.",
+      ctaLabel: "Join the waitlist",
       ctaKind: "waitlist",
+      secondaryCtaLabel: "See what makes it different",
     },
+    heroVisual: "code",
     problem: {
       title: "Technical skill alone won't get you there",
       body: "You got passed over for the PM role, or watched a non-technical coworker get promoted to lead. Technical skill got you in the room — it isn't what gets you a seat at the table. That's not a knock on you. It's a different skill set, and most engineers never get taught it.",
@@ -218,20 +239,22 @@ export const VARIANTS: Variant[] = [
     icpLabel: "ICP C — Women in Tech",
     personaName: "The Engineer Who Belongs",
     theme: {
-      bg: "bg-[#FBF7F2]",
-      heroBg: "bg-[#A51C30]",
-      heroText: "text-white",
-      accent: "text-[#A51C30]",
-      accentText: "bg-[#A51C30] text-white",
-      headingFont: "font-serif",
+      surface: "bg-paper-warm",
+      rule: "border-rule-warm",
+      cta: "btn-primary btn-crimson",
+      displayLean: "serif",
     },
     hero: {
       headline: "Built With You in Mind. Not After the Fact.",
+      headlineLead: "Built with you in mind.",
+      headlineEmphasis: "Not after the fact.",
       subhead:
         "The MS/MBA brings your engineering identity into HBS — with a community of women who've done it, a women's representative in the program, and a dual degree that says you can build it and run it.",
-      ctaLabel: "Talk to Our Women's Rep",
+      ctaLabel: "Talk to our women's rep",
       ctaKind: "info-session",
+      secondaryCtaLabel: "Meet the community",
     },
+    heroVisual: "community",
     problem: {
       title: "Will I belong here?",
       body: "You've likely navigated being underrepresented before. Admissions materials rarely show you the community, the representation, or the evidence — just the promise. You want proof, not a poster.",

@@ -1,0 +1,73 @@
+---
+// ICP C — warm, community-forward, evidence over promises.
+//
+// The pull quote leads, because this ICP responds to first-person alumni voice
+// over institutional copy. The cards behind it stand for alumni paths until real
+// names, photos, and quotes land (PRD section 8) — they name paths, not persons,
+// so nothing here invents a human being.
+//
+// The offset crimson slab behind the quote is the same device used in the ICP B
+// collage, which keeps the three variants reading as one design system.
+const paths = [
+	{ path: "Founder", detail: "Raised a seed round", accent: "bg-crimson" },
+	{ path: "Product lead", detail: "Shipped at scale", accent: "bg-ink" },
+	{ path: "Investor", detail: "Backs technical teams", accent: "bg-crimson" },
+];
+
+// Cascade down the left so the group spans the full height of the frame,
+// leaving the bottom-right for the quote — a diagonal, not a huddle.
+const layout = [
+	{ top: "2%", left: "2%", rotate: "-5deg" },
+	{ top: "27%", left: "12%", rotate: "1.5deg" },
+	{ top: "52%", left: "2%", rotate: "-3deg" },
+];
+---
+
+<div class="relative aspect-[4/3] w-full">
+	<!-- Path cards, stacked on a diagonal so they read as one set -->
+	{
+		paths.map((item, i) => (
+			<article
+				class="absolute w-[46%] border border-rule-warm bg-white px-[3.4cqw] py-[2.8cqw] shadow-[0_18px_44px_-26px_rgba(22,36,61,0.32)]"
+				style={`top:${layout[i].top}; left:${layout[i].left}; transform: rotate(${layout[i].rotate});`}
+			>
+				<div class="flex items-center gap-[2cqw]">
+					<span
+						class={`aspect-square w-[1.7cqw] shrink-0 rounded-full ${item.accent}`}
+						aria-hidden="true"
+					/>
+					<div class="min-w-0">
+						<p
+							class="font-display text-[clamp(0.6rem,2.5cqw,0.9375rem)] leading-tight font-bold text-ink"
+						>
+							{item.path}
+						</p>
+						<p class="mt-[0.4cqw] truncate text-[clamp(0.5rem,2cqw,0.75rem)] leading-tight text-ink-muted">
+							{item.detail}
+						</p>
+					</div>
+				</div>
+			</article>
+		))
+	}
+
+	<!-- Crimson slab offset behind the quote, like a print registration mark -->
+	<div
+		class="absolute right-[12%] bottom-[14%] h-[32%] w-[44%] rotate-[7deg] bg-crimson-bright shadow-[0_18px_50px_-22px_rgba(138,21,38,0.45)]"
+	>
+	</div>
+
+	<!-- The quote leads: largest element, front of the stack -->
+	<blockquote
+		class="absolute right-[2%] bottom-[3%] w-[56%] rotate-[2deg] bg-ink px-[4.4cqw] py-[3.8cqw] text-white shadow-[0_30px_66px_-24px_rgba(22,36,61,0.6)]"
+	>
+		<p class="font-editorial text-[clamp(0.8rem,4cqw,1.625rem)] leading-[1.2] text-balance italic">
+			“I can build it and run it.”
+		</p>
+		<footer
+			class="mt-[2.5cqw] text-[clamp(0.45rem,1.6cqw,0.6875rem)] font-semibold tracking-[0.18em] text-white/45 uppercase"
+		>
+			The dual-degree signal
+		</footer>
+	</blockquote>
+</div>

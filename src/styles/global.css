@@ -1,1 +1,206 @@
 @import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   MS/MBA: Engineering Sciences — design tokens
+
+   Type is the personality here: a heavy grotesk set against a high-contrast
+   editorial serif italic. That pairing carries the HBS×SEAS duality (rigor +
+   craft) without needing photography we don't have yet.
+--------------------------------------------------------------------------- */
+
+@theme {
+	/* Harvard crimson, plus a brighter tone reserved for graphic shapes only */
+	--color-crimson: #a51c30;
+	--color-crimson-bright: #c8102e;
+	--color-crimson-deep: #8a1526;
+
+	/* SEAS-leaning navy, used as ink so body copy never sits at pure black */
+	--color-ink: #16243d;
+	--color-ink-soft: #3d4d69;
+	--color-ink-muted: #6b7789;
+
+	--color-paper: #f4f5f6;
+	--color-paper-warm: #faf6f1;
+	--color-rule: #dfe2e6;
+	--color-rule-warm: #e8ddd0;
+
+	--font-display: "Archivo", ui-sans-serif, system-ui, sans-serif;
+	--font-editorial: "Instrument Serif", ui-serif, Georgia, serif;
+
+	--text-hero: clamp(2.5rem, 5.4vw, 4.5rem);
+	--text-section: clamp(1.75rem, 3.5vw, 2.75rem);
+}
+
+@layer base {
+	html {
+		scroll-behavior: smooth;
+	}
+
+	body {
+		font-family: var(--font-display);
+		color: var(--color-ink);
+		-webkit-font-smoothing: antialiased;
+		text-rendering: optimizeLegibility;
+	}
+
+	::selection {
+		background: var(--color-crimson);
+		color: white;
+	}
+
+	:focus-visible {
+		outline: 2px solid var(--color-crimson);
+		outline-offset: 3px;
+	}
+}
+
+@layer components {
+	/* Letterspaced caps used for eyebrows and labels throughout */
+	.eyebrow {
+		font-size: 0.6875rem;
+		font-weight: 600;
+		letter-spacing: 0.18em;
+		text-transform: uppercase;
+	}
+
+	/* The graph-paper field behind hero visuals — engineering drafting nod */
+	.grid-field {
+		background-image:
+			linear-gradient(to right, rgb(22 36 61 / 0.055) 1px, transparent 1px),
+			linear-gradient(to bottom, rgb(22 36 61 / 0.055) 1px, transparent 1px);
+		background-size: 46px 46px;
+	}
+
+	/* Restrained take on the liquid-glass button: an inner top highlight and a
+	   sheen that sweeps across on hover. No blur, no aquarium. */
+	.btn-primary {
+		position: relative;
+		overflow: hidden;
+		isolation: isolate;
+		background: var(--color-ink);
+		color: white;
+		box-shadow:
+			inset 0 1px 0 rgb(255 255 255 / 0.16),
+			0 1px 2px rgb(22 36 61 / 0.28),
+			0 8px 24px -8px rgb(22 36 61 / 0.45);
+		transition:
+			transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+			box-shadow 0.25s ease;
+	}
+
+	.btn-primary::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+		z-index: -1;
+		background: linear-gradient(
+			105deg,
+			transparent 35%,
+			rgb(255 255 255 / 0.22) 50%,
+			transparent 65%
+		);
+		transform: translateX(-120%);
+		transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+	}
+
+	.btn-primary:hover {
+		transform: translateY(-1px);
+		box-shadow:
+			inset 0 1px 0 rgb(255 255 255 / 0.22),
+			0 2px 4px rgb(22 36 61 / 0.3),
+			0 14px 32px -10px rgb(22 36 61 / 0.5);
+	}
+
+	.btn-primary:hover::after {
+		transform: translateX(120%);
+	}
+
+	/* Crimson variant for the warmer ICP C treatment */
+	.btn-primary.btn-crimson {
+		background: var(--color-crimson);
+		box-shadow:
+			inset 0 1px 0 rgb(255 255 255 / 0.2),
+			0 1px 2px rgb(138 21 38 / 0.3),
+			0 8px 24px -8px rgb(138 21 38 / 0.45);
+	}
+
+	.btn-primary.btn-crimson:hover {
+		box-shadow:
+			inset 0 1px 0 rgb(255 255 255 / 0.26),
+			0 2px 4px rgb(138 21 38 / 0.32),
+			0 14px 32px -10px rgb(138 21 38 / 0.5);
+	}
+
+	/* Text link whose rule draws itself in on hover */
+	.link-underline {
+		position: relative;
+	}
+
+	.link-underline::after {
+		content: "";
+		position: absolute;
+		left: 0;
+		right: 0;
+		bottom: -3px;
+		height: 1.5px;
+		background: currentColor;
+		transform: scaleX(0);
+		transform-origin: left;
+		transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+	}
+
+	.link-underline:hover::after {
+		transform: scaleX(1);
+	}
+}
+
+@layer utilities {
+	/* Borrowed from manuarora700's container-scroll-animation: the visual sits
+	   tilted in 3D and flattens as it scrolls into view. Driven by a scroll
+	   listener writing --tilt / --lift, so no Framer Motion dependency. */
+	.scroll-tilt {
+		perspective: 1200px;
+	}
+
+	.scroll-tilt > * {
+		transform: rotateX(var(--tilt, 3.5deg)) translateY(var(--lift, 12px))
+			scale(var(--tilt-scale, 0.985));
+		transform-origin: center top;
+		will-change: transform;
+	}
+
+	.reveal {
+		opacity: 0;
+		transform: translateY(18px);
+		transition:
+			opacity 0.7s cubic-bezier(0.2, 0.8, 0.2, 1),
+			transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+	}
+
+	.reveal.is-visible {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+
+	.scroll-tilt > * {
+		transform: none !important;
+	}
+
+	.reveal {
+		opacity: 1;
+		transform: none;
+		transition: none;
+	}
+
+	.btn-primary,
+	.btn-primary::after,
+	.link-underline::after {
+		transition: none;
+	}
+}
