@@ -139,7 +139,8 @@ export interface Variant {
   id: "parent" | "swe" | "women-in-tech";
   slug: string;
   icpLabel: string;
-  personaName: string;
+  /** Plain description of who this page is for — used on the internal index. */
+  audience: string;
   theme: {
     /** Page surface — cool paper for A/B, warm for C. */
     surface: string;
@@ -227,8 +228,8 @@ export const VARIANTS: Variant[] = [
   {
     id: "parent",
     slug: "parent",
-    icpLabel: "ICP A — The Parent",
-    personaName: "The Strategic Parent",
+    icpLabel: "ICP A — Parents",
+    audience: "Parents",
     theme: {
       surface: "bg-paper",
       rule: "border-rule",
@@ -281,8 +282,8 @@ export const VARIANTS: Variant[] = [
   {
     id: "swe",
     slug: "swe",
-    icpLabel: "ICP B — The SWE Pivot",
-    personaName: "The Builder Who Wants to Lead",
+    icpLabel: "ICP B — Engineers",
+    audience: "Engineers, 2–6 years in",
     theme: {
       surface: "bg-paper",
       rule: "border-rule",
@@ -344,8 +345,8 @@ export const VARIANTS: Variant[] = [
   {
     id: "women-in-tech",
     slug: "women-in-tech",
-    icpLabel: "ICP C — Women in Tech",
-    personaName: "The Engineer Who Belongs",
+    icpLabel: "ICP C — Women in tech",
+    audience: "Women in tech weighing HBS",
     theme: {
       surface: "bg-paper-warm",
       rule: "border-rule-warm",
