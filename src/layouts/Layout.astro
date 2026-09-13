@@ -28,7 +28,16 @@ const programSchema = {
 	educationalCredentialAwarded: ["MBA", "MS in Engineering Sciences"],
 };
 
-const plausibleDomain = import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN;
+/**
+ * Plausible's current install format. The site identity is baked into the
+ * script filename rather than passed as a data-domain attribute.
+ *
+ * Hardcoded rather than held in an env var on purpose: this id is served to
+ * every visitor in the page source, so it is public by definition, and keeping
+ * it in a gitignored .env would mean analytics silently breaking on any fresh
+ * clone or CI build. To point at a different Plausible site, change this line.
+ */
+const PLAUSIBLE_SRC = "https://plausible.io/js/pa-UmzFPIc0xDhjnphpEiS1O.js";
 ---
 
 <!doctype html>
@@ -51,16 +60,24 @@ const plausibleDomain = import.meta.env.PUBLIC_PLAUSIBLE_DOMAIN;
 		<meta name="description" content={description} />
 		{noindex && <meta name="robots" content="noindex" />}
 		<script is:inline type="application/ld+json" set:html={JSON.stringify(programSchema)} />
-		{
-			plausibleDomain && (
-				<script
-					is:inline
-					defer
-					data-domain={plausibleDomain}
-					src="https://plausible.io/js/script.tagged-events.js"
-				/>
-			)
-		}
+
+		{/* Privacy-friendly analytics by Plausible. The inline stub queues any
+		    custom event fired before the async script finishes loading, so the
+		    waitlist and FAQ events are not lost on a fast interaction. */}
+		<script is:inline async src={PLAUSIBLE_SRC}></script>
+		<script is:inline>
+			window.plausible =
+				window.plausible ||
+				function () {
+					(plausible.q = plausible.q || []).push(arguments);
+				};
+			plausible.init =
+				plausible.init ||
+				function (i) {
+					plausible.o = i || {};
+				};
+			plausible.init();
+		</script>
 	</head>
 	<body class={bodyClass}>
 		<slot />

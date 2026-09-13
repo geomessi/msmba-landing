@@ -9,7 +9,7 @@ declare namespace Cloudflare {
 }
 
 interface ImportMetaEnv {
-	readonly PUBLIC_PLAUSIBLE_DOMAIN?: string;
+	readonly DEV: boolean;
 }
 
 interface ImportMeta {
