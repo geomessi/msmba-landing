@@ -2,7 +2,7 @@
 import type { Variant } from "../data/content";
 import { sentenceLines } from "../lib/type";
 import CodeCollage from "./visuals/CodeCollage.astro";
-import CredentialCollage from "./visuals/CredentialCollage.astro";
+import ConvergenceGraphic from "./visuals/ConvergenceGraphic.astro";
 import CommunityCollage from "./visuals/CommunityCollage.astro";
 
 interface Props {
@@ -16,7 +16,7 @@ const Collage =
 	variant.heroVisual === "code"
 		? CodeCollage
 		: variant.heroVisual === "credential"
-			? CredentialCollage
+			? ConvergenceGraphic
 			: CommunityCollage;
 
 // ICP B leads with the grotesk and turns to serif; A and C invert that, opening
@@ -37,7 +37,7 @@ const leadClass =
 		<div class="max-w-[34rem] lg:max-w-none">
 			<p class="eyebrow flex items-center gap-3 text-crimson">
 				<span class="h-px w-8 bg-crimson" aria-hidden="true"></span>
-				Harvard Business School × SEAS
+				Harvard Business School and Engineering Sciences
 			</p>
 
 			<h1 class="mt-7 text-hero leading-[0.95] text-ink [text-wrap:pretty]">
@@ -85,7 +85,7 @@ const leadClass =
 		class={`grid-field relative flex items-center border-t ${theme.rule} px-6 py-14 sm:px-10 lg:border-t-0 lg:border-l lg:py-20`}
 	>
 		<!-- @container so collage type scales with the panel rather than the
-			 viewport — the compositions are proportional at any width. -->
+			 viewport, so the compositions are proportional at any width. -->
 		<div class="scroll-tilt @container w-full" data-scroll-tilt>
 			<div>
 				<Collage />

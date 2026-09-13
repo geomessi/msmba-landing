@@ -1,73 +1,116 @@
 ---
-// ICP C — warm, community-forward, evidence over promises.
+// ICP C. A live community rather than a stack of cards.
 //
-// The pull quote leads, because this ICP responds to first-person alumni voice
-// over institutional copy. The cards behind it stand for alumni paths until real
-// names, photos, and quotes land (PRD section 8) — they name paths, not persons,
-// so nothing here invents a human being.
-//
-// The offset crimson slab behind the quote is the same device used in the ICP B
-// collage, which keeps the three variants reading as one design system.
-const paths = [
-	{ path: "Founder", detail: "Raised a seed round", accent: "bg-crimson" },
-	{ path: "Product lead", detail: "Shipped at scale", accent: "bg-ink" },
-	{ path: "Investor", detail: "Backs technical teams", accent: "bg-crimson" },
+// Three orbit rings turn at different speeds around a warm core, with nodes
+// riding each ring. It reads as a small network in motion, which is what the
+// cohort actually is, and it avoids both the card-stack cliché and any visual
+// that would reduce the women here to a symbol.
+const rings = [
+	{ r: 132, nodes: 5, cls: "orbit", dur: "46s" },
+	{ r: 96, nodes: 4, cls: "orbit-reverse", dur: "34s" },
+	{ r: 58, nodes: 3, cls: "orbit", dur: "24s" },
 ];
 
-// Cascade down the left so the group spans the full height of the frame,
-// leaving the bottom-right for the quote — a diagonal, not a huddle.
-const layout = [
-	{ top: "2%", left: "2%", rotate: "-5deg" },
-	{ top: "27%", left: "12%", rotate: "1.5deg" },
-	{ top: "52%", left: "2%", rotate: "-3deg" },
-];
+const pointsOn = (r: number, count: number) =>
+	Array.from({ length: count }, (_, i) => {
+		const a = (i / count) * Math.PI * 2 - Math.PI / 2;
+		return { x: 200 + r * Math.cos(a), y: 150 + r * Math.sin(a) * 0.72 };
+	});
 ---
 
 <div class="relative aspect-[4/3] w-full">
-	<!-- Path cards, stacked on a diagonal so they read as one set -->
-	{
-		paths.map((item, i) => (
-			<article
-				class="absolute w-[46%] border border-rule-warm bg-white px-[3.4cqw] py-[2.8cqw] shadow-[0_18px_44px_-26px_rgba(22,36,61,0.32)]"
-				style={`top:${layout[i].top}; left:${layout[i].left}; transform: rotate(${layout[i].rotate});`}
-			>
-				<div class="flex items-center gap-[2cqw]">
-					<span
-						class={`aspect-square w-[1.7cqw] shrink-0 rounded-full ${item.accent}`}
-						aria-hidden="true"
+	<svg
+		viewBox="0 0 400 300"
+		fill="none"
+		class="h-full w-full"
+		role="img"
+		aria-label="A network of connected nodes orbiting a shared centre, representing the cohort community"
+	>
+		<defs>
+			<radialGradient id="cc-core">
+				<stop offset="0%" stop-color="#a51c30" stop-opacity="0.55" />
+				<stop offset="100%" stop-color="#a51c30" stop-opacity="0" />
+			</radialGradient>
+			<linearGradient id="cc-ring" x1="0" y1="0" x2="1" y2="1">
+				<stop offset="0%" stop-color="#a51c30" stop-opacity="0.55" />
+				<stop offset="55%" stop-color="#c8102e" stop-opacity="0.2" />
+				<stop offset="100%" stop-color="#16243d" stop-opacity="0.35" />
+			</linearGradient>
+		</defs>
+
+		<circle cx="200" cy="150" r="120" fill="url(#cc-core)" />
+
+		{
+			rings.map((ring, ri) => (
+				<g class={ring.cls} style={`animation-duration:${ring.dur}; transform-origin:200px 150px`}>
+					<ellipse
+						cx="200"
+						cy="150"
+						rx={ring.r}
+						ry={ring.r * 0.72}
+						stroke="url(#cc-ring)"
+						stroke-width="1.25"
+						stroke-dasharray="3 7"
 					/>
-					<div class="min-w-0">
-						<p
-							class="font-display text-[clamp(0.6rem,2.5cqw,0.9375rem)] leading-tight font-bold text-ink"
-						>
-							{item.path}
-						</p>
-						<p class="mt-[0.4cqw] truncate text-[clamp(0.5rem,2cqw,0.75rem)] leading-tight text-ink-muted">
-							{item.detail}
-						</p>
-					</div>
-				</div>
-			</article>
-		))
-	}
+					{pointsOn(ring.r, ring.nodes).map((p, i) => (
+						<g>
+							<circle
+								cx={p.x}
+								cy={p.y}
+								r="9"
+                				fill="#a51c30"
+								opacity="0.16"
+								class="pulse-halo"
+								style={`animation-delay:${(ri * 3 + i) * 380}ms`}
+							/>
+							<circle
+								cx={p.x}
+								cy={p.y}
+								r={i === 0 ? 6 : 4.5}
+								fill={i % 3 === 0 ? "#a51c30" : i % 3 === 1 ? "#16243d" : "#c8102e"}
+								class="pulse-node"
+								style={`animation-delay:${(ri * 2 + i) * 300}ms`}
+							/>
+						</g>
+					))}
+				</g>
+			))
+		}
 
-	<!-- Crimson slab offset behind the quote, like a print registration mark -->
-	<div
-		class="absolute right-[12%] bottom-[14%] h-[32%] w-[44%] rotate-[7deg] bg-crimson-bright shadow-[0_18px_50px_-22px_rgba(138,21,38,0.45)]"
-	>
-	</div>
-
-	<!-- The quote leads: largest element, front of the stack -->
-	<blockquote
-		class="absolute right-[2%] bottom-[3%] w-[56%] rotate-[2deg] bg-ink px-[4.4cqw] py-[3.8cqw] text-white shadow-[0_30px_66px_-24px_rgba(22,36,61,0.6)]"
-	>
-		<p class="font-editorial text-[clamp(0.8rem,4cqw,1.625rem)] leading-[1.2] text-balance italic">
-			“I can build it and run it.”
-		</p>
-		<footer
-			class="mt-[2.5cqw] text-[clamp(0.45rem,1.6cqw,0.6875rem)] font-semibold tracking-[0.18em] text-white/45 uppercase"
+		<!-- Shared centre -->
+		<circle cx="200" cy="150" r="30" fill="#a51c30" opacity="0.12" class="pulse-halo" />
+		<circle cx="200" cy="150" r="21" fill="#fff" stroke="#a51c30" stroke-width="2" />
+		<text
+			x="200"
+			y="147"
+			text-anchor="middle"
+			class="fill-crimson"
+			style="font-size:13px; font-weight:800; letter-spacing:-0.01em"
 		>
-			The dual-degree signal
-		</footer>
-	</blockquote>
+			30
+		</text>
+		<text
+			x="200"
+			y="159"
+			text-anchor="middle"
+			class="fill-ink-muted"
+			style="font-size:6.5px; letter-spacing:0.16em; font-weight:600"
+		>
+			COHORT
+		</text>
+	</svg>
+
+	<!-- A single line of student voice, anchored over the network -->
+	<figure
+		class="absolute right-[2%] bottom-[2%] w-[54%] rotate-[1.5deg] bg-ink px-[4.4cqw] py-[3.6cqw] text-white shadow-[0_30px_66px_-24px_rgba(22,36,61,0.6)]"
+	>
+		<p class="font-editorial text-[clamp(0.85rem,3.6cqw,1.5rem)] leading-[1.25] text-balance italic">
+			“I found the courage to go all in.”
+		</p>
+		<figcaption
+			class="mt-[2.4cqw] text-[clamp(0.45rem,1.6cqw,0.6875rem)] font-semibold tracking-[0.18em] text-white/45 uppercase"
+		>
+			Current student
+		</figcaption>
+	</figure>
 </div>

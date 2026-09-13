@@ -1,6 +1,6 @@
 /// <reference types="astro/client" />
 
-// LOOPS_API_KEY is a secret (not in wrangler.jsonc) — set via
+// LOOPS_API_KEY is a secret (not in wrangler.jsonc), set via
 // `npx wrangler pages secret put LOOPS_API_KEY` / .dev.vars locally.
 declare namespace Cloudflare {
 	interface Env {

@@ -1,0 +1,56 @@
+---
+import type { Variant } from "../data/content";
+
+interface Props {
+	variant: Variant;
+}
+
+const { variant } = Astro.props;
+const { cohort, theme } = variant;
+if (!cohort) return null;
+---
+
+<!-- The cohort argument, given its own beat. A connecting line runs down the
+	 left of the list with a pulsing node per role, so the six roles read as one
+	 continuous relationship rather than six separate claims. -->
+<section
+	class={`rule-glide border-t ${theme.rule} px-5 py-20 sm:px-8 sm:py-24`}
+	aria-label={cohort.title}
+>
+	<div class="mx-auto max-w-[1400px]">
+		<div class="grid gap-8 lg:grid-cols-[10rem_1fr] lg:gap-20">
+			<p class="eyebrow shrink-0 text-ink-muted lg:pt-5">The cohort</p>
+
+			<div>
+				<h2 class="max-w-2xl font-editorial text-section leading-[1.15] text-balance text-ink">
+					{cohort.title}
+				</h2>
+				<p class="mt-5 max-w-2xl text-lg leading-relaxed text-ink-soft">{cohort.intro}</p>
+
+				{/* No connecting spine here: the list is two columns, so a single
+				    vertical line would only ever track the left one. */}
+				<ul class="relative mt-12 grid gap-x-14 gap-y-9 sm:grid-cols-2">
+					{
+						cohort.roles.map((role, i) => (
+							<li class="reveal relative flex gap-5">
+								<span class="relative mt-2 flex h-3 w-3 shrink-0 items-center justify-center">
+									<span
+										class="pulse-halo absolute inset-0 rounded-full bg-crimson/45"
+										style={`animation-delay:${i * 420}ms`}
+										aria-hidden="true"
+									/>
+									<span class="relative h-2 w-2 rounded-full bg-crimson" aria-hidden="true" />
+								</span>
+
+								<div>
+									<h3 class="font-display text-lg font-bold tracking-tight text-ink">{role.label}</h3>
+									<p class="mt-1 leading-relaxed text-ink-soft">{role.detail}</p>
+								</div>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+		</div>
+	</div>
+</section>

@@ -10,13 +10,13 @@ interface Props {
 
 const { title, description, bodyClass = "", noindex = false } = Astro.props;
 
-// Section 5.4 — schema.org markup so AI assistants can cite program facts directly.
+// Section 5.4, schema.org markup so AI assistants can cite program facts directly.
 const programSchema = {
 	"@context": "https://schema.org",
 	"@type": "EducationalOccupationalProgram",
 	name: "MS/MBA: Engineering Sciences",
 	description:
-		"A two-year, full-time dual degree from Harvard Business School and Harvard SEAS for engineers who want to found and lead technology ventures.",
+		"A two-year, full-time joint degree from Harvard Business School and the Harvard John A. Paulson School of Engineering and Applied Sciences, for engineers who want to found and lead technology ventures.",
 	provider: [
 		{ "@type": "CollegeOrUniversity", name: "Harvard Business School" },
 		{

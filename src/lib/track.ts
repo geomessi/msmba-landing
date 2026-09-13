@@ -1,4 +1,4 @@
-// Section 5.2 — custom events required before any traffic goes live:
+// Section 5.2, custom events required before any traffic goes live:
 // waitlist_signup, info_session_click, faq_expand (each carries the variant id).
 
 declare global {

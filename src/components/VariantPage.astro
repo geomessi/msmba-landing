@@ -5,6 +5,7 @@ import Hero from "./Hero.astro";
 import ProblemSection from "./ProblemSection.astro";
 import ProgramSection from "./ProgramSection.astro";
 import SocialProof from "./SocialProof.astro";
+import CohortSection from "./CohortSection.astro";
 import VideoSection from "./VideoSection.astro";
 import Testimonials from "./Testimonials.astro";
 import ProgramSnapshot from "./ProgramSnapshot.astro";
@@ -19,10 +20,10 @@ interface Props {
 
 const { variant } = Astro.props;
 
-// PRD 5.4 — the full official program name must appear in the title, the meta
+// PRD 5.4, the full official program name must appear in the title, the meta
 // description, and the H1 (the H1 lives in Hero.astro).
-const title = `${variant.hero.headline} | MS/MBA: Engineering Sciences — Harvard HBS × SEAS`;
-const description = `The MS/MBA: Engineering Sciences is a two-year dual degree from Harvard Business School and Harvard SEAS. ${variant.hero.subhead}`;
+const title = `${variant.hero.headline} | MS/MBA: Engineering Sciences, Harvard Business School and the School of Engineering and Applied Sciences`;
+const description = `The MS/MBA: Engineering Sciences is a two-year joint degree from Harvard Business School and the Harvard School of Engineering and Applied Sciences. ${variant.hero.subhead}`;
 ---
 
 <Layout title={title} description={description} bodyClass={variant.theme.surface}>
@@ -32,6 +33,7 @@ const description = `The MS/MBA: Engineering Sciences is a two-year dual degree 
 		<ProblemSection variant={variant} />
 		<ProgramSection variant={variant} />
 		<SocialProof variant={variant} />
+		{variant.cohort && <CohortSection variant={variant} />}
 		{variant.video && <VideoSection variant={variant} />}
 		<Testimonials variant={variant} />
 		<ProgramSnapshot variant={variant} />

@@ -1,5 +1,6 @@
 ---
 import type { Variant } from "../data/content";
+import { emphasize } from "../lib/type";
 
 interface Props {
 	variant: Variant;
@@ -35,14 +36,17 @@ const single = testimonials.length === 1;
 								“
 							</span>
 
+							{/* Emphasis markup lifts key phrases so a long quote has texture
+							    instead of landing as an undifferentiated wall of type. */}
 							<blockquote class="relative">
 								<p
-									class={`font-editorial leading-[1.3] text-ink ${
-										single ? "max-w-4xl text-[clamp(1.5rem,3vw,2.25rem)]" : "text-[clamp(1.25rem,2vw,1.625rem)]"
+									class={`font-editorial leading-[1.3] text-ink-soft ${
+										single
+											? "max-w-4xl text-[clamp(1.4rem,2.7vw,2.05rem)]"
+											: "text-[clamp(1.2rem,1.9vw,1.5rem)]"
 									}`}
-								>
-									{item.quote}
-								</p>
+									set:html={emphasize(item.quote)}
+								/>
 							</blockquote>
 
 							<figcaption class={`mt-6 flex flex-wrap items-baseline gap-x-3 border-t ${theme.rule} pt-4`}>

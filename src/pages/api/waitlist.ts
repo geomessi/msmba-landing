@@ -38,7 +38,7 @@ export const POST: APIRoute = async ({ request }) => {
 		ts: new Date().toISOString(),
 	};
 
-	// Cloudflare bindings (KV + secrets) — see wrangler.jsonc / .dev.vars.
+	// Cloudflare bindings (KV + secrets), see wrangler.jsonc / .dev.vars.
 	if (env.WAITLIST) {
 		const key = `waitlist:${entry.ts}:${crypto.randomUUID()}`;
 		await env.WAITLIST.put(key, JSON.stringify(entry));
@@ -62,7 +62,7 @@ export const POST: APIRoute = async ({ request }) => {
 				}),
 			});
 		} catch {
-			// Loops forwarding is best-effort — the KV write above is the source of truth.
+			// Loops forwarding is best-effort, the KV write above is the source of truth.
 		}
 	}
 

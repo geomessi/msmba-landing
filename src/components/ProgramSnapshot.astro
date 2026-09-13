@@ -1,5 +1,5 @@
 ---
-import { PROGRAM_SNAPSHOT, PROGRAM_STATS } from "../data/content";
+import { PROGRAM_STATS } from "../data/content";
 import type { Variant } from "../data/content";
 
 interface Props {
@@ -10,17 +10,24 @@ const { variant } = Astro.props;
 const { theme } = variant;
 ---
 
-<section class={`border-t ${theme.rule} px-5 py-20 sm:px-8 sm:py-24`} aria-label="Program snapshot">
+<!-- The prose restatement of degrees and deadlines used to live here. It was
+	 redundant against the FAQ, which covers the same ground in the format an
+	 answer engine actually quotes. -->
+<section
+	class={`rule-glide border-t ${theme.rule} px-5 py-20 sm:px-8 sm:py-24`}
+	aria-label="Program snapshot"
+>
 	<div class="mx-auto max-w-[1400px]">
 		<p class="eyebrow text-ink-muted">Program snapshot</p>
 
-		<!-- Oversized numerals: the facts do the talking -->
-		<dl class={`mt-10 grid divide-y ${theme.rule} border-y ${theme.rule} sm:grid-cols-3 sm:divide-x sm:divide-y-0`}>
+		<dl
+			class={`mt-10 grid divide-y ${theme.rule} border-y ${theme.rule} sm:grid-cols-3 sm:divide-x sm:divide-y-0`}
+		>
 			{
 				PROGRAM_STATS.map((stat) => (
-					<div class="reveal px-0 py-9 sm:px-9 sm:first:pl-0 sm:last:pr-0">
+					<div class="reveal group px-0 py-9 sm:px-9 sm:first:pl-0 sm:last:pr-0">
 						<dd class="flex items-baseline gap-2">
-							<span class="font-display text-6xl font-extrabold tracking-[-0.04em] text-ink tabular-nums sm:text-7xl">
+							<span class="font-display text-6xl font-extrabold tracking-[-0.04em] text-ink tabular-nums transition-colors duration-500 group-hover:text-crimson sm:text-7xl">
 								{stat.value}
 							</span>
 							{stat.unit && (
@@ -32,17 +39,5 @@ const { theme } = variant;
 				))
 			}
 		</dl>
-
-		<!-- Full prose kept on the page for AEO: crawlers and chatbots read these -->
-		<div class="mt-10 grid gap-x-16 gap-y-6 sm:grid-cols-2">
-			<p class="text-ink-soft">
-				<span class="font-bold text-ink">Degrees conferred.</span> {PROGRAM_SNAPSHOT.degrees}
-			</p>
-			<p class="text-ink-soft">
-				<span class="font-bold text-ink">Application timing.</span> {
-					PROGRAM_SNAPSHOT.applicationTiming
-				}
-			</p>
-		</div>
 	</div>
 </section>

@@ -1,5 +1,4 @@
 ---
-import { UNIVERSAL_FAQ } from "../data/content";
 import type { Variant } from "../data/content";
 
 interface Props {
@@ -7,11 +6,12 @@ interface Props {
 }
 
 const { variant } = Astro.props;
-const { objections, theme } = variant;
+const { theme } = variant;
 
-// ICP-specific questions first, universal program facts after — all as plain
-// body text per PRD 5.4 (no PDFs, no modals), so chatbots can quote them.
-const faqs = [...objections, ...UNIVERSAL_FAQ];
+// Order is set per variant in the data, so the section reads as a sequence.
+// All answers sit in plain body text per PRD 5.4, no PDFs and no modals, so
+// answer engines can quote them directly.
+const faqs = variant.faqs;
 
 const faqSchema = {
 	"@context": "https://schema.org",
@@ -24,7 +24,7 @@ const faqSchema = {
 };
 ---
 
-<section id="faq" class={`border-t ${theme.rule} px-5 py-20 sm:px-8 sm:py-24`}>
+<section id="faq" class={`rule-glide border-t ${theme.rule} px-5 py-20 sm:px-8 sm:py-24`}>
 	<script is:inline type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
 
 	<div class="mx-auto max-w-[1400px]">
@@ -33,7 +33,7 @@ const faqSchema = {
 
 			<div class="max-w-3xl">
 				<h2 class="font-editorial text-section leading-[1.15] text-balance text-ink">
-					Questions people ask
+					Frequently Asked Questions
 				</h2>
 
 				<div class={`mt-10 border-t ${theme.rule}`}>

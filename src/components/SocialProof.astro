@@ -2,6 +2,7 @@
 import { getAlumni } from "../data/content";
 import type { Variant } from "../data/content";
 import FeaturedStories from "./FeaturedStories.astro";
+import Wordmarks from "./Wordmarks.astro";
 
 interface Props {
 	variant: Variant;
@@ -20,7 +21,7 @@ function initials(name: string): string {
 }
 ---
 
-<section id="outcomes" class={`border-t ${theme.rule} px-5 py-20 sm:px-8 sm:py-24`}>
+<section id="outcomes" class={`rule-glide border-t ${theme.rule} px-5 py-20 sm:px-8 sm:py-24`}>
 	<div class="mx-auto max-w-[1400px]">
 		<div class="grid gap-8 lg:grid-cols-[10rem_1fr] lg:gap-20">
 			<p class="eyebrow shrink-0 text-ink-muted lg:pt-5">Outcomes</p>
@@ -32,14 +33,18 @@ function initials(name: string): string {
 
 				{
 					socialProof.stat && (
-						<p class="mt-8 flex items-baseline gap-4">
+						/* The label sits on one line beside the numeral rather than
+						   wrapping into a narrow column next to it. */
+						<p class="mt-8 flex flex-wrap items-baseline gap-x-4 gap-y-1">
 							<span class="font-display text-5xl font-extrabold tracking-[-0.04em] text-crimson tabular-nums sm:text-6xl">
 								{socialProof.stat.value}
 							</span>
-							<span class="max-w-[16rem] text-ink-soft">{socialProof.stat.label}</span>
+							<span class="text-lg whitespace-nowrap text-ink-soft">{socialProof.stat.label}</span>
 						</p>
 					)
 				}
+
+				{socialProof.wordmarks && <Wordmarks names={socialProof.wordmarks} variant={variant} />}
 
 				{socialProof.stories && <FeaturedStories stories={socialProof.stories} variant={variant} />}
 

@@ -12,12 +12,12 @@ const { hero } = variant;
 ---
 
 <section id="waitlist" class="relative overflow-hidden bg-ink px-5 py-24 sm:px-8 sm:py-32">
-	<!-- Crimson bleed in the corner, echoing the hero collage -->
-	<div
-		class="pointer-events-none absolute -top-24 -right-24 h-80 w-80 rotate-12 bg-crimson/25 blur-[100px]"
-		aria-hidden="true"
-	>
-	</div>
+	<!-- Same drifting wash as the problem section, so the two dark bookends of
+		 the page feel like one continuous surface. -->
+	<div class="aurora pointer-events-none absolute inset-0 opacity-80" aria-hidden="true"></div>
+	<span
+		class="rule-glide pointer-events-none absolute inset-x-0 top-0 h-0.5"
+		aria-hidden="true"></span>
 
 	<div class="relative mx-auto max-w-[1400px]">
 		<div class="grid gap-12 lg:grid-cols-2 lg:items-end lg:gap-20">
@@ -38,8 +38,7 @@ const { hero } = variant;
 
 			<div class="lg:pb-3">
 				<p class="mb-8 max-w-md text-lg leading-relaxed text-white/65">
-					Leave your email and we'll send program details and the application timeline. Nothing
-					else.
+					Leave your email and we will send program details and the application timeline.
 				</p>
 				<WaitlistForm variant={variant} placement="cta" />
 			</div>

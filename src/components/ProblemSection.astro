@@ -9,18 +9,19 @@ const { variant } = Astro.props;
 const { problem, theme } = variant;
 ---
 
-<!-- "Make them feel seen before you sell." Set as a full-width editorial
-	 statement on the ink ground — a deliberate tonal drop before the pitch.
-	 The headline runs wide rather than sitting in a narrow column, so the
-	 section reads as a held beat instead of a half-empty grid. -->
+<!-- "Make them feel seen before you sell." A full-width editorial statement on
+	 the ink ground, a deliberate tonal drop before the pitch. The headline runs
+	 wide rather than sitting in a narrow column, so the section reads as a held
+	 beat instead of a half-empty grid. -->
 <section class={`border-t ${theme.rule} relative overflow-hidden bg-ink px-5 py-24 sm:px-8`}>
-	<!-- Soft crimson bloom off the right edge. Blurred rather than a hard-edged
-		 shape, which read as a seam across the navy. -->
-	<div
-		class="pointer-events-none absolute top-1/2 -right-24 h-[120%] w-[38%] -translate-y-1/2 rotate-[14deg] bg-crimson/25 blur-[90px]"
-		aria-hidden="true"
-	>
-	</div>
+	<!-- Slow drifting colour wash. Blurred and low-opacity so it reads as light
+		 in the room rather than a shape on top of the type. -->
+	<div class="aurora pointer-events-none absolute inset-0 opacity-70" aria-hidden="true"></div>
+
+	<!-- A hairline that travels the top edge, tying the dark sections together -->
+	<span
+		class="rule-glide pointer-events-none absolute inset-x-0 top-0 h-0.5"
+		aria-hidden="true"></span>
 
 	<!-- No eyebrow label here on purpose: "The tension" was internal PRD framing,
 		 and the dark ground already marks this as its own beat. -->

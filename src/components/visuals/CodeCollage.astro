@@ -1,26 +1,39 @@
 ---
-// ICP B — "builders in the room, code on screens, but in a Harvard setting."
-// Geometric slabs behind a terminal window; no photography required.
-// Composition rule: crimson reads top-left, navy bottom-right, window bridges
-// them on the diagonal — each element stays legible rather than stacking up.
+// ICP B. The terminal is the whole idea, so the floating crimson and navy slabs
+// that used to sit behind it are gone: they were decoration that never tied to
+// anything. Depth now comes from a second window stacked behind the first and a
+// soft gradient bloom, which belong to the same object rather than orbiting it.
 ---
 
 <div class="relative aspect-[4/3] w-full">
-	<!-- Crimson slab, top-left, clear of the window -->
+	<!-- Bloom, sitting under everything -->
 	<div
-		class="absolute top-[4%] left-[7%] h-[33%] w-[30%] rotate-[-7deg] bg-crimson-bright shadow-[0_18px_50px_-22px_rgba(138,21,38,0.5)]"
+		class="pointer-events-none absolute top-[18%] left-[8%] h-[64%] w-[84%] rounded-[40%] bg-gradient-to-br from-crimson/25 via-crimson/10 to-ink/25 blur-[60px]"
+		aria-hidden="true"
 	>
 	</div>
 
-	<!-- Navy slab, bottom-right -->
+	<!-- Window behind, offset for depth. Kept dark enough to read as a second
+		 window rather than a grey slab, with ghosted code lines inside. -->
 	<div
-		class="absolute top-[60%] left-[52%] h-[34%] w-[38%] rotate-[6deg] bg-ink shadow-[0_18px_50px_-22px_rgba(22,36,61,0.55)]"
+		class="absolute top-[14%] left-[24%] h-[48%] w-[70%] rotate-[3.5deg] overflow-hidden rounded-lg bg-[#1b2b45] opacity-80 shadow-[0_18px_44px_-22px_rgba(22,36,61,0.55)]"
+		aria-hidden="true"
 	>
+		<div class="flex gap-[1cqw] bg-white/[0.05] px-[2.6cqw] py-[1.7cqw]">
+			<span class="aspect-square w-[1.5cqw] rounded-full bg-white/20"></span>
+			<span class="aspect-square w-[1.5cqw] rounded-full bg-white/20"></span>
+			<span class="aspect-square w-[1.5cqw] rounded-full bg-white/20"></span>
+		</div>
+		<div class="space-y-[1.6cqw] px-[3cqw] pt-[2.4cqw]">
+			<span class="block h-[1.1cqw] w-[42%] rounded-full bg-white/12"></span>
+			<span class="block h-[1.1cqw] w-[58%] rounded-full bg-white/10"></span>
+			<span class="block h-[1.1cqw] w-[34%] rounded-full bg-white/[0.07]"></span>
+		</div>
 	</div>
 
-	<!-- Terminal window, bridging the diagonal -->
+	<!-- Front window -->
 	<figure
-		class="absolute top-[24%] left-[17%] w-[74%] -rotate-[2deg] overflow-hidden rounded-lg bg-[#0f1b2e] shadow-[0_30px_70px_-22px_rgba(22,36,61,0.6)]"
+		class="absolute top-[27%] left-[8%] w-[76%] -rotate-[2deg] overflow-hidden rounded-lg bg-[#0f1b2e] shadow-[0_30px_70px_-22px_rgba(22,36,61,0.65)]"
 	>
 		<div class="flex items-center gap-[1.6cqw] bg-white/[0.07] px-[2.6cqw] py-[1.7cqw]">
 			<span class="flex gap-[1cqw]" aria-hidden="true">
@@ -41,6 +54,11 @@
 <span class="select-none text-white/25">03  </span>
 <span class="select-none text-white/25">04  </span><span class="text-[#f692ce]">return</span> <span class="text-[#7dd3fc]">build</span><span class="text-white/55">(</span><span class="text-[#a5f3c0]">future</span><span class="text-white/55">)</span>
 <span class="select-none text-white/25">05  </span><span class="caret text-white/70">_</span></code></pre>
+
+		<!-- Scanline drifting down the window -->
+		<span
+			class="scan pointer-events-none absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-transparent via-white/[0.045] to-transparent"
+			aria-hidden="true"></span>
 	</figure>
 </div>
 
@@ -55,9 +73,32 @@
 		}
 	}
 
+	.scan {
+		animation: scan 6.5s ease-in-out infinite;
+	}
+
+	@keyframes scan {
+		0% {
+			transform: translateY(-100%);
+			opacity: 0;
+		}
+		12%,
+		68% {
+			opacity: 1;
+		}
+		100% {
+			transform: translateY(520%);
+			opacity: 0;
+		}
+	}
+
 	@media (prefers-reduced-motion: reduce) {
-		.caret {
+		.caret,
+		.scan {
 			animation: none;
+		}
+		.scan {
+			opacity: 0;
 		}
 	}
 </style>

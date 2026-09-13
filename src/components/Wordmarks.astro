@@ -1,0 +1,34 @@
+---
+import type { Variant } from "../data/content";
+
+interface Props {
+	names: string[];
+	variant: Variant;
+}
+
+const { names, variant } = Astro.props;
+const { theme } = variant;
+---
+
+<!-- Typeset rather than brand image files: logo assets carry trademark usage
+	 rules, and a row of mismatched PNGs reads worse than clean type. Each name
+	 lifts and warms on hover so the row feels alive. -->
+<div class={`mt-10 border-t ${theme.rule} pt-8`}>
+	<p class="eyebrow text-ink-muted">Graduates build and lead at</p>
+
+	<ul class="mt-6 flex flex-wrap items-center gap-x-9 gap-y-5">
+		{
+			names.map((name, i) => (
+				<li
+					class="reveal font-display text-xl font-bold tracking-tight text-ink/45 transition-all duration-300 hover:-translate-y-0.5 hover:text-ink sm:text-2xl"
+					style={`transition-delay:${i * 25}ms`}
+				>
+					{name}
+				</li>
+			))
+		}
+		<li class="font-editorial text-lg text-crimson italic sm:text-xl">
+			and many more leading firms
+		</li>
+	</ul>
+</div>

@@ -70,7 +70,7 @@ const formId = `waitlist-${variant.slug}-${placement}`;
 			const ctaKind = form.dataset.ctaKind ?? "waitlist";
 
 			if (!emailInput?.checkValidity()) {
-				if (status) status.textContent = "That email doesn't look right — mind checking it?";
+				if (status) status.textContent = "That email address does not look right. Mind checking it?";
 				emailInput?.focus();
 				return;
 			}
@@ -91,7 +91,7 @@ const formId = `waitlist-${variant.slug}-${placement}`;
 
 				track(ctaKind === "info-session" ? "info_session_click" : "waitlist_signup", { variant });
 
-				if (status) status.textContent = "You're on the list — check your email.";
+				if (status) status.textContent = "You are on the list. Check your email for confirmation.";
 				if (label) label.textContent = "Done";
 				form.reset();
 				// Leave the confirmed state visible rather than snapping back.

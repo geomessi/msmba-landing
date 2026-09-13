@@ -1,0 +1,124 @@
+---
+// ICP A. Two disciplines climbing to one Harvard degree.
+//
+// The left path is orthogonal, drawn like a circuit trace with square
+// junctions: engineering. The right path is a smooth curve with round data
+// points: business. Both ascend from the lower corners and meet at a single
+// pulsing node at the apex, so the shape reads as a summit rather than a trend
+// line. An earlier version had the business curve descending to the right,
+// which read as a falling chart.
+const ENGINEERING = "M10,250 V214 H58 V178 H106 V142 H154 V104 H186";
+const BUSINESS = "M390,250 C336,244 306,196 276,156 C254,126 230,98 214,86";
+---
+
+<div class="relative aspect-[4/3] w-full">
+	<svg
+		viewBox="0 0 400 300"
+		fill="none"
+		class="h-full w-full"
+		role="img"
+		aria-label="An engineering circuit path and a business growth curve rising from opposite corners to meet at a single Harvard joint degree"
+	>
+		<defs>
+			<linearGradient id="cg-eng" x1="0" y1="1" x2="1" y2="0">
+				<stop offset="0%" stop-color="#16243d" stop-opacity="0.2" />
+				<stop offset="100%" stop-color="#16243d" />
+			</linearGradient>
+			<linearGradient id="cg-biz" x1="1" y1="1" x2="0" y2="0">
+				<stop offset="0%" stop-color="#c8102e" stop-opacity="0.2" />
+				<stop offset="100%" stop-color="#a51c30" />
+			</linearGradient>
+			<radialGradient id="cg-glow">
+				<stop offset="0%" stop-color="#a51c30" stop-opacity="0.35" />
+				<stop offset="100%" stop-color="#a51c30" stop-opacity="0" />
+			</radialGradient>
+		</defs>
+
+		<circle cx="200" cy="86" r="86" fill="url(#cg-glow)" />
+
+		<!-- Engineering, ascending from the lower left -->
+		<path
+			d={ENGINEERING}
+			stroke="url(#cg-eng)"
+			stroke-width="2.5"
+			stroke-linecap="square"
+			class="draw-line"
+			style="--len:520"
+		/>
+		{
+			[
+				[58, 178],
+				[106, 142],
+				[154, 104],
+			].map(([x, y]) => <rect x={x - 4} y={y - 4} width="8" height="8" fill="#16243d" />)
+		}
+
+		<!-- Business, ascending from the lower right -->
+		<path
+			d={BUSINESS}
+			stroke="url(#cg-biz)"
+			stroke-width="2.5"
+			stroke-linecap="round"
+			class="draw-line"
+			style="--len:520; animation-delay:0.25s"
+		/>
+		{
+			[
+				[276, 156],
+				[330, 232],
+			].map(([x, y]) => <circle cx={x} cy={y} r="4.5" fill="#a51c30" />)
+		}
+
+		<!-- A charge travelling up each path -->
+		<circle r="3.5" fill="#c8102e" class="travel" style={`offset-path:path('${ENGINEERING}')`} />
+		<circle
+			r="3.5"
+			fill="#16243d"
+			class="travel"
+			style={`offset-path:path('${BUSINESS}'); animation-delay:1.6s`}
+		/>
+
+		<!-- The apex -->
+		<circle cx="200" cy="86" r="26" fill="#a51c30" opacity="0.16" class="pulse-halo" />
+		<circle cx="200" cy="86" r="17" fill="#fff" stroke="#16243d" stroke-width="2" />
+		<circle cx="200" cy="86" r="7" fill="#a51c30" class="pulse-node" />
+
+		<!-- Labels sit inside the open V beneath the apex -->
+		<text
+			x="200"
+			y="152"
+			text-anchor="middle"
+			class="fill-ink"
+			style="font-size:17px; font-weight:800; letter-spacing:-0.02em"
+		>
+			MS/MBA
+		</text>
+		<text
+			x="200"
+			y="171"
+			text-anchor="middle"
+			class="fill-crimson"
+			style="font-size:9.5px; letter-spacing:0.18em; font-weight:600"
+		>
+			ONE HARVARD DEGREE
+		</text>
+
+		<text
+			x="10"
+			y="276"
+			class="fill-ink-muted"
+			style="font-size:11px; letter-spacing:0.18em; font-weight:600"
+		>
+			ENGINEERING
+		</text>
+		<text
+			x="390"
+			y="276"
+			text-anchor="end"
+			class="fill-ink-muted"
+			style="font-size:11px; letter-spacing:0.18em; font-weight:600"
+		>
+			BUSINESS
+		</text>
+	</svg>
+</div>
