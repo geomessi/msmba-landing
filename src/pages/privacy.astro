@@ -1,0 +1,82 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ProseShell from "../components/ProseShell.astro";
+import Footer from "../components/Footer.astro";
+
+const updated = new Date().toLocaleDateString("en-US", {
+	year: "numeric",
+	month: "long",
+	day: "numeric",
+});
+---
+
+<Layout
+	title="Privacy | MS/MBA: Engineering Sciences"
+	description="What the waitlist form collects, where it is stored, and how to have your details removed."
+	bodyClass="bg-paper"
+>
+	<ProseShell eyebrow="Privacy" title="What this site collects">
+		<p>
+			Short version: an email address if you choose to give one, plus which version of the page you
+			were reading. Nothing else, and nothing is sold or shared.
+		</p>
+
+		<h2>If you submit the form</h2>
+		<p>When you enter your email address, four things are recorded:</p>
+		<ul>
+			<li>The email address you typed.</li>
+			<li>Which of the three page versions you submitted from.</li>
+			<li>
+				Whether you asked to join the waitlist or to request an information session.
+			</li>
+			<li>
+				Any campaign parameters in the link you arrived through, which indicate where the link was
+				shared rather than anything about you.
+			</li>
+		</ul>
+		<p>
+			This is stored in Cloudflare Workers KV, on infrastructure operated by Cloudflare. It is used
+			to follow up with program details and to understand which description of the program people
+			respond to. If an email service is connected, your address is also passed to it for the
+			purpose of sending you that follow-up.
+		</p>
+
+		<h2>Analytics</h2>
+		<p>
+			This site uses <a href="https://plausible.io/">Plausible</a>, which is privacy-first and
+			cookie-free. It does not collect personal data, does not track you across sites, and does not
+			build a profile of you. It records aggregate counts: page views, which version was viewed, and
+			whether a visitor submitted the form or opened a question.
+		</p>
+		<p>
+			The video on the parent page is embedded through YouTube's no-cookie domain, so YouTube does
+			not set a tracking cookie unless you press play.
+		</p>
+
+		<h2>What does not happen</h2>
+		<ul>
+			<li>Your details are never sold, rented, or shared with third parties for their own use.</li>
+			<li>There is no advertising network on this site and no advertising cookie.</li>
+			<li>You are not tracked across other websites.</li>
+		</ul>
+
+		<h2>Removing your details</h2>
+		<p>
+			You can ask to have your email address deleted at any time, and it will be removed from
+			storage and from any connected email service. Send the request from the address you signed up
+			with, to the same contact you received program follow-up from, and say you would like your
+			details deleted.
+		</p>
+
+		<h2>This is an independent site</h2>
+		<p>
+			This site is run by a student in the program, not by Harvard. It is not an official Harvard
+			publication, and submitting the form here is not an application to any Harvard program. See <a
+				href="/about">About this site</a
+			> for more.
+		</p>
+
+		<p><strong>Last updated:</strong> {updated}</p>
+	</ProseShell>
+	<Footer />
+</Layout>

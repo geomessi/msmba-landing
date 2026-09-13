@@ -38,6 +38,54 @@ const programSchema = {
  * clone or CI build. To point at a different Plausible site, change this line.
  */
 const PLAUSIBLE_SRC = "https://plausible.io/js/pa-UmzFPIc0xDhjnphpEiS1O.js";
+
+const SITE = "https://aifounder-msmba.aifounder-msmba.workers.dev";
+const canonical = new URL(Astro.url.pathname, SITE).href.replace(/\/$/, "") || SITE;
+const ogImage = `${SITE}/og.png`;
+
+// A markdown twin exists for the variant pages and the root, so advertise it.
+const mdPath =
+	Astro.url.pathname === "/" ? "/index.md" : `${Astro.url.pathname.replace(/\/$/, "")}.md`;
+const hasMarkdown = ["/", "/parent", "/swe", "/women-in-tech"].includes(
+	Astro.url.pathname.replace(/\/$/, "") || "/",
+);
+
+/**
+ * Identity schema. The scan found structured data but no entity type, so an
+ * agent could read the program facts without resolving who is behind them.
+ *
+ * sameAs points at the real Harvard properties on purpose: this is an
+ * independent student site, and the right outcome is an agent resolving the
+ * program to Harvard rather than mistaking this domain for an official one.
+ * No phone number or email is invented here for the same reason.
+ */
+const organizationSchema = {
+	"@context": "https://schema.org",
+	"@type": "EducationalOrganization",
+	"@id": `${SITE}/#organization`,
+	name: "Harvard MS/MBA: Engineering Sciences",
+	alternateName: "MS/MBA Engineering Sciences",
+	url: SITE,
+	description:
+		"A two-year joint degree from Harvard Business School and the Harvard John A. Paulson School of Engineering and Applied Sciences.",
+	parentOrganization: { "@type": "CollegeOrUniversity", name: "Harvard University", url: "https://www.harvard.edu/" },
+	address: {
+		"@type": "PostalAddress",
+		streetAddress: "Soldiers Field",
+		addressLocality: "Boston",
+		addressRegion: "MA",
+		postalCode: "02163",
+		addressCountry: "US",
+	},
+	contactPoint: {
+		"@type": "ContactPoint",
+		contactType: "admissions",
+		url: "https://www.hbs.edu/mba/admissions/Pages/default.aspx",
+		areaServed: "Worldwide",
+		availableLanguage: "English",
+	},
+	sameAs: ["https://www.hbs.edu/", "https://seas.harvard.edu/", "https://www.harvard.edu/"],
+};
 ---
 
 <!doctype html>
@@ -58,8 +106,30 @@ const PLAUSIBLE_SRC = "https://plausible.io/js/pa-UmzFPIc0xDhjnphpEiS1O.js";
 
 		<title>{title}</title>
 		<meta name="description" content={description} />
+		<link rel="canonical" href={canonical} />
 		{noindex && <meta name="robots" content="noindex" />}
+
+		{/* Point agents at the plain-text twin of this page. */}
+		{hasMarkdown && <link rel="alternate" type="text/markdown" href={mdPath} />}
+		<link rel="alternate" type="text/plain" href="/llms.txt" title="Guidance for AI agents" />
+		<link rel="sitemap" type="application/xml" href="/sitemap.xml" />
+
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="MS/MBA: Engineering Sciences" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:image" content={ogImage} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content="MS/MBA: Engineering Sciences, Harvard" />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImage} />
+
 		<script is:inline type="application/ld+json" set:html={JSON.stringify(programSchema)} />
+		<script is:inline type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
 
 		{/* Privacy-friendly analytics by Plausible. The inline stub queues any
 		    custom event fired before the async script finishes loading, so the

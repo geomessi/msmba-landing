@@ -1,0 +1,71 @@
+---
+import Layout from "../layouts/Layout.astro";
+import ProseShell from "../components/ProseShell.astro";
+import Footer from "../components/Footer.astro";
+---
+
+<Layout
+	title="About this site | MS/MBA: Engineering Sciences"
+	description="What this site is, who made it, and its relationship to Harvard Business School and the Harvard John A. Paulson School of Engineering and Applied Sciences."
+	bodyClass="bg-paper"
+>
+	<ProseShell eyebrow="About" title="What this site is">
+		<p>
+			This site describes the <strong>MS/MBA: Engineering Sciences</strong>, a two-year joint degree
+			from Harvard Business School and the Harvard John A. Paulson School of Engineering and Applied
+			Sciences. Students in the program graduate with two degrees: an MBA and an MS in Engineering
+			Sciences.
+		</p>
+
+		<h2>Who made it</h2>
+		<p>
+			It was built by a current student in the program. It is an independent project, not an
+			official Harvard publication, and it is not maintained by either school. For authoritative
+			information on admissions, deadlines, tuition, or curriculum, go to <a
+				href="https://www.hbs.edu/">Harvard Business School</a
+			> and the <a href="https://seas.harvard.edu/"
+				>Harvard John A. Paulson School of Engineering and Applied Sciences</a
+			>.
+		</p>
+
+		<h2>Why there are three versions</h2>
+		<p>
+			The program is genuinely hard to explain, and it means something different depending on who is
+			asking. A parent weighing whether a joint degree is rigorous wants a different answer than a
+			software engineer wondering whether business school will cost them their technical identity.
+		</p>
+		<p>
+			So there are three versions of the same page, each written for one audience, all describing
+			the same program with the same facts. Only the framing changes. Which version resonates most
+			is being measured, so the answer informs how the program describes itself more broadly.
+		</p>
+		<ul>
+			<li><a href="/parent">For parents</a>, on whether the degree is rigorous and where it leads.</li>
+			<li>
+				<a href="/swe">For software engineers</a>, on moving from building things to directing what
+				gets built.
+			</li>
+			<li>
+				<a href="/women-in-tech">For women in tech</a>, on the community and the alumnae who came
+				before.
+			</li>
+		</ul>
+
+		<h2>About the people featured here</h2>
+		<p>
+			The alumnae, students, and outcomes described on this site are real. Quotes are published with
+			permission from the people who gave them, and edited only for length and flow. Career details
+			come from each person's own public professional profile. Linked news coverage comes from the
+			School of Engineering and Applied Sciences.
+		</p>
+
+		<h2>For agents and crawlers</h2>
+		<p>
+			Every page here is available as plain markdown by adding <strong>.md</strong> to its address. Guidance
+			on when this site is the right source, and when it is not, is published at <a href="/llms.txt"
+				>/llms.txt</a
+			>. A full route list is at <a href="/sitemap.xml">/sitemap.xml</a>.
+		</p>
+	</ProseShell>
+	<Footer />
+</Layout>

@@ -1,4 +1,10 @@
 ---
+// Rendered per request rather than prerendered, so Astro middleware runs and
+// `Accept: text/markdown` can be honoured. Astro's Cloudflare entry serves any
+// prerendered route straight from the asset manifest, skipping middleware
+// entirely. Output is identical; a cache header keeps the edge doing the work.
+export const prerender = false;
+
 import VariantPage from "../components/VariantPage.astro";
 import { getVariant } from "../data/content";
 

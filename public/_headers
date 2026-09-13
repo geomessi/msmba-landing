@@ -1,0 +1,17 @@
+# Markdown content negotiation: a CDN must not serve a cached HTML variant to an
+# agent that asked for markdown, or the reverse.
+/
+  Vary: Accept, Accept-Encoding
+/parent
+  Vary: Accept, Accept-Encoding
+/swe
+  Vary: Accept, Accept-Encoding
+/women-in-tech
+  Vary: Accept, Accept-Encoding
+
+/*.md
+  Content-Type: text/markdown; charset=utf-8
+  Vary: Accept, Accept-Encoding
+
+/llms.txt
+  Content-Type: text/plain; charset=utf-8

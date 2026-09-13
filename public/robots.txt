@@ -1,0 +1,17 @@
+# MS/MBA: Engineering Sciences
+#
+# This site exists to be found and quoted, including by AI assistants, so
+# everything here is open to search and to retrieval-augmented answering.
+
+User-agent: *
+Allow: /
+
+# Content signals. "search" covers indexing and excerpts; "ai-input" covers
+# retrieval and grounding for generated answers, which is the point of this
+# site. "ai-train" is deliberately left unset: neither granted nor restricted.
+Content-Signal: search=yes, ai-input=yes
+
+Sitemap: https://aifounder-msmba.aifounder-msmba.workers.dev/sitemap.xml
+
+# Structured guidance for agents, including when this site is the right source:
+# https://aifounder-msmba.aifounder-msmba.workers.dev/llms.txt

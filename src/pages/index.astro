@@ -1,48 +1,191 @@
 ---
+// Rendered per request rather than prerendered, so Astro middleware runs and
+// `Accept: text/markdown` can be honoured. Astro's Cloudflare entry serves any
+// prerendered route straight from the asset manifest, skipping middleware
+// entirely. Output is identical; a cache header keeps the edge doing the work.
+export const prerender = false;
+
 import Layout from "../layouts/Layout.astro";
-import { VARIANTS } from "../data/content";
+import Footer from "../components/Footer.astro";
+import Wordmarks from "../components/Wordmarks.astro";
+import { VARIANTS, PROGRAM_STATS, EMPLOYER_WORDMARKS, getVariant } from "../data/content";
+
+// The agent-readiness scan measured the root and found 447 characters: a link
+// list with no substance. An agent asked "what is this and who is it for" could
+// not answer from it. This is now a real overview page carrying the program
+// facts in raw HTML, with the variant links kept underneath.
+const variant = getVariant("parent")!;
 ---
 
 <Layout
-	title="MS/MBA Landing Page Variants, Internal Review"
-	description="Internal review index for the three MS/MBA: Engineering Sciences landing page variants."
-	noindex
+	title="MS/MBA: Engineering Sciences | Harvard Business School and the School of Engineering and Applied Sciences"
+	description="A two-year joint degree from Harvard Business School and the Harvard John A. Paulson School of Engineering and Applied Sciences. Graduates receive an MBA and an MS in Engineering Sciences. Roughly thirty students per cohort, every one admitted with a technical background."
 	bodyClass="bg-paper"
 >
-	<main class="mx-auto max-w-3xl px-5 py-20 sm:px-8 sm:py-28">
-		<p class="eyebrow text-crimson">Internal</p>
-		<h1 class="mt-6 font-editorial text-section leading-tight text-ink">
-			Landing page variants
-		</h1>
-		<p class="mt-4 max-w-xl text-lg text-ink-soft">
-			Same structure on all three pages, different message on each, so the only thing being tested
-			is the copy.
-		</p>
+	<header class="rule-glide sticky top-0 z-50 border-b border-rule bg-paper/85 backdrop-blur-md">
+		<div class="mx-auto flex max-w-[1400px] items-center justify-between gap-6 px-5 py-4 sm:px-8">
+			<span class="flex items-center gap-3.5">
+				<span
+					class="grid h-11 w-11 shrink-0 place-items-center bg-crimson font-editorial text-2xl leading-none text-white"
+					aria-hidden="true">H</span
+				>
+				<span class="flex flex-col leading-none">
+					<span class="text-xl font-bold tracking-tight text-ink">MS/MBA</span>
+					<span class="eyebrow mt-1 hidden whitespace-nowrap text-ink-muted sm:block">
+						Engineering Sciences
+					</span>
+				</span>
+			</span>
+			<a
+				href="/swe"
+				class="group flex shrink-0 items-center gap-1.5 border-b-2 border-crimson pb-0.5 text-sm font-bold whitespace-nowrap text-ink sm:text-[0.9375rem]"
+			>
+				Join the waitlist
+				<span
+					class="text-crimson transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+					aria-hidden="true">↗</span
+				>
+			</a>
+		</div>
+	</header>
 
-		<ul class="mt-14 border-t border-rule">
-			{
-				VARIANTS.map((variant) => (
-					<li class="border-b border-rule">
-						<a href={`/${variant.slug}`} class="group flex items-baseline gap-6 py-7 sm:gap-10">
-							<span class="eyebrow shrink-0 text-crimson">{variant.icpLabel.split(",")[0]}</span>
-							<span class="flex-1">
-								<span class="block font-editorial text-2xl text-ink transition-transform duration-300 group-hover:translate-x-1">
-									{variant.hero.headline}
-								</span>
-								<span class="mt-1 block text-ink-muted">
-									{variant.audience} · {variant.hero.ctaLabel}
-								</span>
-							</span>
-							<span
-								class="shrink-0 text-crimson transition-transform duration-300 group-hover:translate-x-1"
-								aria-hidden="true"
-							>
-								→
-							</span>
-						</a>
-					</li>
-				))
-			}
-		</ul>
+	<main>
+		<section class="px-5 py-20 sm:px-8 sm:py-24">
+			<div class="mx-auto max-w-[1400px]">
+				<p class="eyebrow flex items-center gap-3 text-crimson">
+					<span class="h-px w-8 bg-crimson" aria-hidden="true"></span>
+					Harvard Business School and Engineering Sciences
+				</p>
+
+				<h1 class="mt-7 max-w-4xl text-hero leading-[0.95] text-ink [text-wrap:pretty]">
+					<span class="block font-display font-bold tracking-[-0.03em]">MS/MBA:</span>
+					<span class="mt-1 block font-editorial leading-[1.02] italic">Engineering Sciences.</span>
+				</h1>
+
+				<p class="mt-8 max-w-2xl text-lg leading-relaxed text-ink-soft sm:text-xl">
+					A two-year, full-time joint degree from Harvard Business School and the Harvard John A.
+					Paulson School of Engineering and Applied Sciences. Students graduate with two degrees, an
+					MBA and an MS in Engineering Sciences, and each cohort is roughly thirty people, every one
+					of them admitted with an established technical background.
+				</p>
+
+				<dl
+					class="mt-14 grid divide-y divide-rule border-y border-rule sm:grid-cols-3 sm:divide-x sm:divide-y-0"
+				>
+					{
+						PROGRAM_STATS.map((stat) => (
+							<div class="group px-0 py-9 sm:px-9 sm:first:pl-0 sm:last:pr-0">
+								<dd class="flex items-baseline gap-2">
+									<span class="font-display text-6xl font-extrabold tracking-[-0.04em] text-ink tabular-nums transition-colors duration-500 group-hover:text-crimson sm:text-7xl">
+										{stat.value}
+									</span>
+									{stat.unit && (
+										<span class="font-editorial text-2xl text-crimson italic">{stat.unit}</span>
+									)}
+								</dd>
+								<dt class="mt-3 text-ink-soft">{stat.label}</dt>
+							</div>
+						))
+					}
+				</dl>
+			</div>
+		</section>
+
+		<section class="rule-glide border-t border-rule px-5 py-20 sm:px-8 sm:py-24">
+			<div class="mx-auto grid max-w-[1400px] gap-8 lg:grid-cols-[10rem_1fr] lg:gap-20">
+				<p class="eyebrow shrink-0 text-ink-muted lg:pt-5">How it works</p>
+				<div class="max-w-3xl">
+					<h2 class="font-editorial text-section leading-[1.15] text-balance text-ink">
+						Two curricula, running in parallel
+					</h2>
+					<p class="mt-6 text-lg leading-relaxed text-ink-soft">
+						The program opens with Technology Venture Immersion, an intensive course taught jointly
+						by faculty from both schools before the first academic term begins. From there the
+						Harvard Business School MBA curriculum and the graduate engineering curriculum run
+						alongside each other across both years, which is why the degree takes the full two years
+						rather than being compressed.
+					</p>
+					<p class="mt-4 text-lg leading-relaxed text-ink-soft">
+						The engineering half is taught by the same faculty, on the same curriculum, as the
+						school's standalone master's degree. Admission requires an established technical
+						background. No prior business coursework is required to apply.
+					</p>
+				</div>
+			</div>
+		</section>
+
+		<section class="rule-glide border-t border-rule px-5 py-20 sm:px-8 sm:py-24">
+			<div class="mx-auto grid max-w-[1400px] gap-8 lg:grid-cols-[10rem_1fr] lg:gap-20">
+				<p class="eyebrow shrink-0 text-ink-muted lg:pt-5">Outcomes</p>
+				<div>
+					<h2 class="max-w-2xl font-editorial text-section leading-[1.15] text-balance text-ink">
+						Where graduates go
+					</h2>
+					<p class="mt-6 max-w-2xl text-lg leading-relaxed text-ink-soft">
+						Graduates lead product and engineering teams at major technology companies, work in
+						venture capital and technology investing, and found their own companies.
+					</p>
+					<p class="mt-8 flex flex-wrap items-baseline gap-x-4 gap-y-1">
+						<span
+							class="font-display text-5xl font-extrabold tracking-[-0.04em] text-crimson tabular-nums sm:text-6xl"
+							>$300M+</span
+						>
+						<span class="text-lg whitespace-nowrap text-ink-soft">
+							Venture funding raised by alumni founders
+						</span>
+					</p>
+					<Wordmarks names={EMPLOYER_WORDMARKS} variant={variant} />
+				</div>
+			</div>
+		</section>
+
+		<section class="rule-glide border-t border-rule px-5 py-20 sm:px-8 sm:py-24">
+			<div class="mx-auto grid max-w-[1400px] gap-8 lg:grid-cols-[10rem_1fr] lg:gap-20">
+				<p class="eyebrow shrink-0 text-ink-muted lg:pt-5">Who it's for</p>
+				<div>
+					<h2 class="max-w-2xl font-editorial text-section leading-[1.15] text-balance text-ink">
+						Three ways into the same program
+					</h2>
+					<p class="mt-6 max-w-2xl text-lg leading-relaxed text-ink-soft">
+						The program means something different depending on who is asking, so each page below
+						describes it for one audience. The facts are identical; only the framing changes.
+					</p>
+
+					<ul class="mt-10 border-t border-rule">
+						{
+							VARIANTS.map((v) => (
+								<li class="border-b border-rule">
+									<a href={`/${v.slug}`} class="group flex items-baseline gap-6 py-7 sm:gap-10">
+										<span class="eyebrow shrink-0 text-crimson">{v.audience}</span>
+										<span class="flex-1">
+											<span class="block font-editorial text-2xl text-ink transition-transform duration-300 group-hover:translate-x-1">
+												{v.hero.headline}
+											</span>
+										</span>
+										<span
+											class="shrink-0 text-crimson transition-transform duration-300 group-hover:translate-x-1"
+											aria-hidden="true"
+										>
+											→
+										</span>
+									</a>
+								</li>
+							))
+						}
+					</ul>
+
+					<p class="mt-10 text-ink-muted">
+						Every page is also available as plain markdown by adding <code class="font-mono"
+							>.md</code
+						> to its address. Guidance on when this site is the right source is at <a
+							class="link-underline text-crimson"
+							href="/llms.txt">/llms.txt</a
+						>. More on <a class="link-underline text-crimson" href="/about">what this site is</a>.
+					</p>
+				</div>
+			</div>
+		</section>
 	</main>
+
+	<Footer />
 </Layout>

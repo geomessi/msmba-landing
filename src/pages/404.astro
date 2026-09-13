@@ -1,0 +1,54 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { VARIANTS } from "../data/content";
+
+// The scan flagged that a 404 returning no guidance leaves an agent with no
+// recoverable path. This page lists every route in plain text, and the head
+// points at the sitemap and llms.txt, so a crawler that lands here can still
+// find its way to the content.
+const routes = [
+	{ href: "/", label: "Program overview" },
+	...VARIANTS.map((v) => ({ href: `/${v.slug}`, label: `${v.hero.headline} (${v.audience})` })),
+	{ href: "/about", label: "About this site" },
+	{ href: "/privacy", label: "Privacy" },
+];
+---
+
+<Layout
+	title="Page not found | MS/MBA: Engineering Sciences"
+	description="That page does not exist. Every page on this site is listed here, along with the sitemap and agent guidance."
+	noindex
+	bodyClass="bg-paper"
+>
+	<main class="mx-auto max-w-3xl px-5 py-20 sm:px-8 sm:py-28">
+		<p class="eyebrow text-crimson">404</p>
+		<h1 class="mt-6 font-editorial text-section leading-tight text-ink">Page not found</h1>
+		<p class="mt-4 max-w-xl text-lg text-ink-soft">
+			That page does not exist. Everything on this site is listed below.
+		</p>
+
+		<ul class="mt-12 border-t border-rule">
+			{
+				routes.map((route) => (
+					<li class="border-b border-rule">
+						<a href={route.href} class="group flex items-baseline gap-6 py-5">
+							<span class="flex-1 text-ink transition-transform duration-300 group-hover:translate-x-1">
+								{route.label}
+							</span>
+							<span class="font-mono text-sm text-ink-muted">{route.href}</span>
+							<span class="text-crimson" aria-hidden="true">
+								→
+							</span>
+						</a>
+					</li>
+				))
+			}
+		</ul>
+
+		<p class="mt-10 text-ink-muted">
+			Machine-readable routes: <a class="link-underline text-crimson" href="/llms.txt">/llms.txt</a>,
+			<a class="link-underline text-crimson" href="/sitemap.xml">/sitemap.xml</a>. Every page is also
+			available as markdown by appending <code class="font-mono">.md</code>.
+		</p>
+	</main>
+</Layout>
