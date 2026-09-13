@@ -22,13 +22,10 @@ const { problem, theme } = variant;
 	>
 	</div>
 
+	<!-- No eyebrow label here on purpose: "The tension" was internal PRD framing,
+		 and the dark ground already marks this as its own beat. -->
 	<div class="relative mx-auto max-w-[1400px]">
-		<p class="eyebrow flex items-center gap-3 text-white/40">
-			<span class="h-px w-8 bg-white/25" aria-hidden="true"></span>
-			The tension
-		</p>
-
-		<div class="reveal mt-10 grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-20">
+		<div class="reveal grid gap-10 lg:grid-cols-[1.15fr_1fr] lg:gap-20">
 			<h2 class="font-editorial text-[clamp(2rem,4.6vw,3.75rem)] leading-[1.06] text-balance text-white">
 				{problem.title}
 			</h2>

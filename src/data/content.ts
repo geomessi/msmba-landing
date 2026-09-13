@@ -196,31 +196,38 @@ export const PROGRAM_SNAPSHOT = {
   cohortSize: "30 students",
   duration: "2 years, full-time, on campus",
   degrees: "MBA (Harvard Business School) + MS in Engineering Sciences (Harvard SEAS)",
-  // Not specified in PRD — team to confirm exact admissions cycle dates.
-  applicationTiming: "Apply through the joint HBS/SEAS admissions process — contact admissions for the current cycle's deadlines.",
+  // Not specified in the PRD, and the exact process isn't documented anywhere I
+  // could verify — deliberately vague rather than inventing an application flow.
+  applicationTiming: "Deadlines and requirements come from HBS and SEAS admissions. Check with them for the current cycle.",
 };
 
-// Section 5.4 — universal AEO questions, answered in plain language in the page body
+// Section 5.4 — the universal AEO questions.
+//
+// These answers are what an answer engine will quote, often stripped of the
+// surrounding page, so each one leads with the direct answer, stands on its own
+// without context, uses the full official program name, and carries a concrete
+// number where there is one. Plain declarative sentences do double duty here:
+// they're what a person wants to read and what a model can lift cleanly.
 export const UNIVERSAL_FAQ: FaqItem[] = [
   {
     question: "What is the Harvard MS/MBA: Engineering Sciences?",
     answer:
-      "The MS/MBA: Engineering Sciences is a two-year, full-time dual degree offered jointly by Harvard Business School and the Harvard John A. Paulson School of Engineering and Applied Sciences (SEAS). Students graduate with both an MBA from HBS and an MS in Engineering Sciences from SEAS, in a single cohort of 30 students built for engineers who want to found and lead technology ventures.",
+      "The MS/MBA: Engineering Sciences is a two-year, full-time dual degree from Harvard Business School and the Harvard John A. Paulson School of Engineering and Applied Sciences (SEAS). Graduates receive two separate degrees: an MBA from HBS and an MS in Engineering Sciences from SEAS. Each cohort is about 30 students, and every one of them comes in with a technical background.",
   },
   {
     question: "Is the MS/MBA good for software engineers?",
     answer:
-      "Yes. The program is built for people with a technical background — software engineers, ML engineers, and other builders — who want business and leadership training without leaving their engineering identity behind. No prior business coursework is required.",
+      "Yes. A technical background is required to get in, and many students come straight from software or machine learning roles. You take the HBS MBA curriculum and a full MS in Engineering Sciences at SEAS at the same time, so the engineering work carries on through both years. No business coursework is required to apply.",
   },
   {
     question: "How long is the Harvard MS/MBA program?",
     answer:
-      "The program is two years, full-time, and confers two degrees: an MBA from Harvard Business School and an MS in Engineering Sciences from Harvard SEAS.",
+      "Two years, full-time, on campus. Students finish with both an MBA from Harvard Business School and an MS in Engineering Sciences from Harvard SEAS.",
   },
   {
     question: "How does the Harvard MS/MBA differ from a regular MBA?",
     answer:
-      "A standard MBA teaches general management. The MS/MBA: Engineering Sciences combines that with a full MS in Engineering Sciences from SEAS, taught alongside a 30-person cohort of technical builders — not a large, generalist MBA class. It's designed for people who want to keep building, not just manage.",
+      "A standard MBA covers general management. The MS/MBA: Engineering Sciences adds a full MS in Engineering Sciences from Harvard SEAS on top of that, so you graduate with an engineering degree as well as a business one. The cohort is also deliberately small, about 30 students, all of them technical.",
   },
 ];
 
@@ -241,7 +248,7 @@ export const VARIANTS: Variant[] = [
       headlineLead: "Two degrees. Two institutions.",
       headlineEmphasis: "One rare path.",
       subhead:
-        "Your child already knows how to build. The MS/MBA equips them to lead what they build — with an MBA from HBS and an MS in Engineering Sciences from SEAS.",
+        "Your child already knows how to build. The MS/MBA: Engineering Sciences adds the part engineering school leaves out — how to fund and run a company — and ends with two degrees: an MBA from Harvard Business School and an MS in Engineering Sciences from SEAS.",
       ctaLabel: "Request an info session",
       ctaKind: "info-session",
       secondaryCtaLabel: "See where graduates go",
@@ -249,15 +256,15 @@ export const VARIANTS: Variant[] = [
     heroVisual: "credential",
     problem: {
       title: "Is this program serious enough?",
-      body: "Prospective students — and the parents helping them decide — often can't tell this apart from an MBA with a few CS electives bolted on. It's a fair question to ask before recommending two years and a rare opportunity cost.",
+      body: "From the outside it can look like an MBA with a few computer science electives attached. Two years, plus the salary your child would have earned in that time, is a lot to commit to something the websites don't explain well.",
     },
     program: {
-      title: "A dual credential, not a detour",
+      title: "What the second degree actually is",
       bullets: [
-        "Two elite institutions, two conferred degrees: MBA (HBS) and MS in Engineering Sciences (SEAS).",
-        "Faculty and curriculum drawn from both schools — rigor is verified by SEAS, not assumed.",
-        "A 30-person cohort, selected for technical depth as well as leadership potential.",
-        "Alumni outcomes span founder, investor, product leader, and engineering leadership paths.",
+        "Two degrees, conferred separately: an MBA from Harvard Business School and an MS in Engineering Sciences from Harvard SEAS.",
+        "The engineering half is taught by SEAS faculty, on the SEAS curriculum — the same school that grants the standalone master's.",
+        "About 30 students per cohort. A technical background is required to get in, so nobody arrives needing to catch up on the engineering side.",
+        "Graduates run companies, lead product at places like Google and AWS, and work in investing.",
       ],
     },
     socialProof: {
@@ -270,12 +277,12 @@ export const VARIANTS: Variant[] = [
       {
         question: "Is this as rigorous as a pure engineering master's?",
         answer:
-          "The MS in Engineering Sciences is conferred by Harvard SEAS, taught by SEAS faculty, alongside the MBA coursework at HBS. The engineering credential is real, not a certificate program grafted onto an MBA.",
+          "The MS in Engineering Sciences is granted by Harvard SEAS and taught by SEAS faculty, on the same engineering curriculum the school uses for its other master's students. It runs alongside the HBS coursework rather than replacing part of it, which is why the program takes two full years.",
       },
       {
         question: "Will this hurt their engineering career if they don't end up founding a company?",
         answer:
-          "No. Alumni outcomes are diverse — product management, investing, engineering leadership, and founder paths are all represented. The dual degree is a credential floor, not a bet on one outcome.",
+          "No. Plenty of graduates never start a company. They go into product management, investing and engineering leadership instead, and the MS means there is still an engineering degree on the résumé whichever direction they take.",
       },
     ],
   },
@@ -295,23 +302,23 @@ export const VARIANTS: Variant[] = [
       headlineLead: "You built it.",
       headlineEmphasis: "Now learn to run it.",
       subhead:
-        "The MS/MBA: Engineering Sciences is a two-year Harvard program for engineers who want to found companies, lead products, and make “how to build it” decisions at the table — not take orders from it.",
+        "The MS/MBA: Engineering Sciences is a two-year Harvard program for engineers who'd rather be setting the direction than implementing someone else's. You leave with an MBA from HBS, an MS in Engineering Sciences from SEAS, and about 30 classmates who can all read your code.",
       ctaLabel: "Join the waitlist",
       ctaKind: "waitlist",
       secondaryCtaLabel: "See what makes it different",
     },
     heroVisual: "code",
     problem: {
-      title: "Technical skill alone won't get you there",
-      body: "You got passed over for the PM role, or watched a non-technical coworker get promoted to lead. Technical skill got you in the room — it isn't what gets you a seat at the table. That's not a knock on you. It's a different skill set, and most engineers never get taught it.",
+      title: "The part nobody taught you",
+      body: "Maybe you got passed over for a PM role, or watched someone less technical get handed the team. The skills that make you good at building things are not the ones that decide who gets to set direction, and an engineering career rarely puts you anywhere you'd learn the difference.",
     },
     program: {
       title: "Not a traditional MBA",
       bullets: [
-        "30 builders, not 300 consultants — an intimate, technical, founder-oriented cohort.",
-        "No business background required. You're not behind here; you're the point.",
-        "Two conferred degrees: MBA (HBS) + MS in Engineering Sciences (SEAS).",
-        "Built for people who want to keep building — and also run what they build.",
+        "About 30 people per cohort, every one of them from a technical background.",
+        "No business coursework required to apply. Most people arrive without any.",
+        "Two degrees at the end: an MBA from HBS and an MS in Engineering Sciences from SEAS.",
+        "The engineering coursework runs through both years, so you're not stepping away from technical work to do this.",
       ],
     },
     socialProof: {
@@ -328,17 +335,17 @@ export const VARIANTS: Variant[] = [
       {
         question: "Will I be the only engineer in a room of finance bros?",
         answer:
-          "No — every student in the 30-person cohort has a technical background. It's built to be a room of builders, not a generalist MBA class.",
+          "No. A technical background is required for admission, so all 30 or so people in your cohort have one. You do take HBS classes alongside the wider MBA program, but the group you go through the engineering coursework with is entirely technical.",
       },
       {
-        question: "Can't I just learn business stuff on my own, from YouTube?",
+        question: "Can I just learn the business side on my own?",
         answer:
-          "You can learn concepts. What you can't replicate on your own is the network, the Harvard credential, and the founder infrastructure — alumni from this program alone have raised over $300M in venture funding.",
+          "You can learn the concepts for free, and plenty of people do. Harder to assemble on your own are the people: a cohort of technical founders, and an alumni network that picks up the phone. Alumni founders from this program have raised more than $300M between them.",
       },
       {
         question: "Will business school make me less of an engineer?",
         answer:
-          "The program is built around your engineering identity, not against it — you keep the MS in Engineering Sciences alongside the MBA. You're not trading one identity for another.",
+          "You'll be doing engineering coursework at SEAS the whole way through, and you finish with an engineering master's. The honest answer is that you'll write less production code over those two years than you would in a job. You won't come out of it without a technical degree, though.",
       },
     ],
   },
@@ -358,7 +365,7 @@ export const VARIANTS: Variant[] = [
       headlineLead: "Built with you in mind.",
       headlineEmphasis: "Not after the fact.",
       subhead:
-        "The MS/MBA brings your engineering identity into HBS — with a community of women who've done it, a women's representative in the program, and a dual degree that says you can build it and run it.",
+        "The MS/MBA: Engineering Sciences lets you do the MBA at HBS without putting the engineering down for two years. There's a women's representative inside the program, and an alumni network of women who've founded venture-backed companies, run product at Google and AWS, and moved into investing.",
       ctaLabel: "Talk to our women's rep",
       ctaKind: "info-session",
       secondaryCtaLabel: "Meet the community",
@@ -366,15 +373,15 @@ export const VARIANTS: Variant[] = [
     heroVisual: "community",
     problem: {
       title: "Will I belong here?",
-      body: "You've likely navigated being underrepresented before. Admissions materials rarely show you the community, the representation, or the evidence — just the promise. You want proof, not a poster.",
+      body: "You've probably been the only woman in a technical room before, and you can tell the difference between a program that has thought about that and one that has a photograph of it. What's usually missing is anything specific: who is actually here, who to talk to, where they ended up.",
     },
     program: {
-      title: "A dual degree that says both",
+      title: "What's actually here",
       bullets: [
-        "An MBA alone signals 'business.' The MS/MBA says: I can build it and run it.",
-        "A dedicated women's representative within the program.",
-        "A cohort and alumni network that includes women who code, lead, and build — not a footnote.",
-        "Two conferred degrees: MBA (HBS) + MS in Engineering Sciences (SEAS).",
+        "An MBA on its own reads as a business degree. This one comes with an engineering master's attached, which changes what people assume you can do.",
+        "A women's representative within the program itself.",
+        "Women in the alumni network who've founded venture-backed companies, run product at Google and AWS, and gone into investing.",
+        "Two degrees at the end: an MBA from HBS and an MS in Engineering Sciences from SEAS.",
       ],
     },
     socialProof: {
@@ -396,12 +403,12 @@ export const VARIANTS: Variant[] = [
         // the program's answer. Add the cohort stat once it's confirmed.
         question: "Will I be one of the only women in a technical program at HBS?",
         answer:
-          "The program has a dedicated women's representative, and its alumni network includes women who have founded venture-backed companies, led product at Google and AWS, and moved into investing. Ask to be connected with any of them directly before you apply.",
+          "There is a women's representative within the program, and the alumni network includes women who have founded venture-backed companies, led product at Google and AWS, and gone into investing. Ask to be introduced to any of them before you apply. That conversation will tell you more than this page can.",
       },
       {
         question: "Is the dual degree worth it, or does the MBA alone open the same doors?",
         answer:
-          "The technical credential differentiates you, especially for VC, founder, and senior IC paths — it signals you can build, not just manage the people who build.",
+          "The engineering degree does most of the work in rooms where people are deciding whether you can evaluate what a technical team is telling you, which comes up constantly in venture, in founding, and in senior individual-contributor roles. An MBA on its own tends to leave that question open.",
       },
     ],
     // ICP C only — the shared blockers in PRE_LAUNCH_BLOCKERS apply on top.

@@ -91,7 +91,7 @@ const formId = `waitlist-${variant.slug}-${placement}`;
 
 				track(ctaKind === "info-session" ? "info_session_click" : "waitlist_signup", { variant });
 
-				if (status) status.textContent = "You're on the list. Check your email for a confirmation.";
+				if (status) status.textContent = "You're on the list — check your email.";
 				if (label) label.textContent = "Done";
 				form.reset();
 				// Leave the confirmed state visible rather than snapping back.
