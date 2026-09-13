@@ -1,31 +1,33 @@
 # Alumni photos
 
-Drop the five headshots here with these exact filenames. The cards fall back to
-initials when a file is missing, so the page stays intact until they land.
+All five are in place, sourced from the LinkedIn profile images. Each was
+resized to 400×400 and re-encoded as JPEG (~2MB total down to ~180KB) because
+they render at 80px and the originals were far heavier than the slot needs.
 
-| File                  | Person           |
-| --------------------- | ---------------- |
-| `yinka-ogunbiyi.jpg`   | Yinka Ogunbiyi   |
-| `ananya-zutshi.jpg`    | Ananya Zutshi    |
-| `yarden-halperin.jpg`  | Yarden Halperin  |
-| `lindsay-dorf.jpg`     | Lindsay Dorf     |
-| `shannon-kay.jpg`      | Shannon Kay      |
+| File                  | Person           | Note                                     |
+| --------------------- | ---------------- | ---------------------------------------- |
+| `yinka-ogunbiyi.jpg`   | Yinka Ogunbiyi   |                                          |
+| `ananya-zutshi.jpg`    | Ananya Zutshi    |                                          |
+| `yarden-halperin.jpg`  | Yarden Halperin  |                                          |
+| `lindsay-dorf.jpg`     | Lindsay Dorf     | Cropped to the face; hers is a full-body seated shot and read as mostly chair at 80px |
+| `shannon-kay.jpg`      | Shannon Kay      |                                          |
 
-Square crops, 400×400 or larger. They render at 80px in a circle, so anything
-above ~200px is plenty; keep each file under ~150KB.
+To replace one, drop in a square image at 400×400 or larger under the same
+filename. The cards fall back to initials whenever a file is missing, so the
+page never breaks.
 
 ## Before these go on a public page
 
 These are real, named, findable people, and the variant pages are public and
-indexable. Two things are not optional:
+indexable. The files currently here came off LinkedIn, which is fine for the
+internal demo and not fine for launch. Two things are not optional:
 
 1. **Permission from each person** to appear by name and photo on a public
    marketing page. LinkedIn being public is not the same as consenting to be
    used in program marketing. Get it in writing.
-2. **Photo rights.** Several of these headshots look professionally shot — the
+2. **Photo rights.** Several of these are professionally shot — the
    photographer may hold the copyright, not the subject. Ask each person for a
-   file she can grant you the right to use, rather than saving the image off
-   LinkedIn.
+   file she can grant you the right to use, and replace the file here with it.
 
 Also pending, tracked in `src/data/content.ts`:
 
