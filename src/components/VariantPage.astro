@@ -5,6 +5,8 @@ import Hero from "./Hero.astro";
 import ProblemSection from "./ProblemSection.astro";
 import ProgramSection from "./ProgramSection.astro";
 import SocialProof from "./SocialProof.astro";
+import VideoSection from "./VideoSection.astro";
+import Testimonials from "./Testimonials.astro";
 import ProgramSnapshot from "./ProgramSnapshot.astro";
 import FAQSection from "./FAQSection.astro";
 import CTASection from "./CTASection.astro";
@@ -30,6 +32,8 @@ const description = `The MS/MBA: Engineering Sciences is a two-year dual degree 
 		<ProblemSection variant={variant} />
 		<ProgramSection variant={variant} />
 		<SocialProof variant={variant} />
+		{variant.video && <VideoSection variant={variant} />}
+		<Testimonials variant={variant} />
 		<ProgramSnapshot variant={variant} />
 		<FAQSection variant={variant} />
 		<CTASection variant={variant} />

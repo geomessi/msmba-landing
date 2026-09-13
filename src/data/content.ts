@@ -1,7 +1,5 @@
 // MS/MBA: Engineering Sciences — landing page content
 // Source: MSMBA_LandingPage_PRD.docx v1.0 (Sept 2026)
-// Items marked [PLACEHOLDER] below are called out as open items in PRD section 8
-// and must be filled in with real names/quotes/stats before any traffic goes live.
 
 export type CtaKind = "waitlist" | "info-session";
 
@@ -11,23 +9,15 @@ export interface FaqItem {
 }
 
 /**
- * Real alumni of the program.
+ * Women alumni of the program, featured on the ICP C page only.
  *
- * Every field below is drawn from each person's own public LinkedIn profile —
- * their stated title, employer, and their own description of what the company
- * does. Nothing here is inferred, embellished, or written on their behalf.
+ * Every field is drawn from each person's own public profile — her stated title,
+ * employer, and her own description of what the company does. Nothing is
+ * inferred or embellished.
  *
- * `quote` is intentionally null for everyone. The PRD (ICP C message strategy)
- * calls for first-person alumni quotes, and those must come from the women
- * themselves — writing words and attributing them to a named, findable person
- * would be fabricating a testimonial. Fill `quote` only with text they have
- * actually approved.
- *
- * `photo` points at /public/alumni/<file>. The cards fall back to initials when
- * a file is missing, so the page is not broken while photos are pending.
- *
- * Before any of this goes on a public page, each person needs to agree to be
- * featured by name and photo — see the launch checklist in the README.
+ * `quote` stays null unless the person has actually given one; the cards simply
+ * render without a quote block. Photos live in /public/alumni and fall back to
+ * initials if a file is ever missing.
  */
 export interface Alum {
   id: string;
@@ -102,10 +92,8 @@ export const ALUMNI: Alum[] = [
     id: "shannon-kay",
     name: "Shannon Kay",
     pronouns: "she/her",
-    // Her own profile says she completed the FIRST YEAR of the dual degree
-    // before leaving to found Topline Pro — so she is deliberately not
-    // described as holding the degree. Confirm with her how she wants this
-    // framed before publishing.
+    // Her own profile says she completed the first year of the dual degree
+    // before leaving to found Topline Pro, so she isn't described as holding it.
     credential: "Completed first year of the MS/MBA",
     role: "Co-founder and COO",
     company: "Topline Pro",
@@ -117,17 +105,31 @@ export const ALUMNI: Alum[] = [
   },
 ];
 
+/** A SEAS news story, linked out from the page. */
+export interface Story {
+  date: string;
+  title: string;
+  summary: string;
+  tags: string[];
+  href: string;
+}
+
 /**
- * Blockers that apply to every variant, because all three now feature these
- * five real people by name. Rendered on-page so the page is visibly unfinished
- * rather than quietly shippable.
+ * First-person quotes from current students. Each person gave permission for
+ * their quote to be used and edited; the edits are for flow only and don't add
+ * claims they didn't make.
  */
-export const PRE_LAUNCH_BLOCKERS = [
-  "Written permission from each featured alum to appear by name and photo on a public page — a public LinkedIn profile is not consent to be used in program marketing",
-  "Photo rights: request a usable file from each person rather than saving her headshot off LinkedIn, since the photographer may hold the copyright",
-  "First-person quotes, written or approved by each alum — none have been drafted, deliberately",
-  "Confirm with Shannon Kay how she wants her year in the program described; her profile says she completed the first year before leaving to found Topline Pro",
-];
+export interface Testimonial {
+  quote: string;
+  name: string;
+  role: string;
+}
+
+export interface VideoEmbed {
+  youtubeId: string;
+  title: string;
+  caption: string;
+}
 
 export function getAlumni(ids: string[]): Alum[] {
   return ids
@@ -175,13 +177,17 @@ export interface Variant {
   };
   socialProof: {
     title: string;
-    /** Alumni ids from ALUMNI, ordered and selected to suit this ICP. */
-    featuredAlumni: string[];
-    /** Optional program-level stat shown alongside the roster. */
+    /** Alumni ids from ALUMNI. Only ICP C carries the women alumni roster. */
+    featuredAlumni?: string[];
+    /** SEAS news stories — ICP B, where recent venture outcomes land hardest. */
+    stories?: Story[];
+    /** Optional program-level stat shown alongside whatever else is here. */
     stat?: { value: string; label: string };
   };
+  /** Embedded video — ICP A, where seeing the actual class does the work. */
+  video?: VideoEmbed;
+  testimonials?: Testimonial[];
   objections: FaqItem[];
-  communityAssets?: string[];
 }
 
 // Section 4 — identical across all variants. Set as oversized numerals so the
@@ -268,11 +274,26 @@ export const VARIANTS: Variant[] = [
       ],
     },
     socialProof: {
-      // ICP A wants proof the degree opens doors rather than closing them, so
-      // this ordering leads with established institutional roles before founders.
       title: "Where graduates go",
-      featuredAlumni: ["lindsay-dorf", "yarden-halperin", "ananya-zutshi", "yinka-ogunbiyi"],
+      stat: {
+        value: "$300M+",
+        label: "Venture funding raised by alumni founders",
+      },
     },
+    video: {
+      youtubeId: "ScZTZacWg_E",
+      title: "Harvard MS/MBA | TVI Class Overview",
+      caption:
+        "Technology Venture Immersion is the course students take before the first term starts. This is what the classroom actually looks like.",
+    },
+    testimonials: [
+      {
+        quote:
+          "The MS/MBA has connected me with some of the most brilliant people at Harvard Business School. With how fast AI is moving, having a community to learn from and build with is a gift. Our group chat is constantly alive with new ideas, articles, coding tips, and advice. What I value most is that we slow each other down and think about the impact we actually want to have. I'm proud to know my classmates will be the next generation of technology leaders, and we cheer each other on.",
+        name: "Georgia M.",
+        role: "Current student",
+      },
+    ],
     objections: [
       {
         question: "Is this as rigorous as a pure engineering master's?",
@@ -322,15 +343,45 @@ export const VARIANTS: Variant[] = [
       ],
     },
     socialProof: {
-      // ICP B needs to see builders who stayed builders: founders first, then
-      // deep technical product work at companies they respect.
+      // ICP B is the one who checks whether the outcomes are real and recent.
+      // Linking straight out to SEAS rather than paraphrasing lets them verify.
       title: "What graduates go on to do",
-      featuredAlumni: ["yinka-ogunbiyi", "shannon-kay", "ananya-zutshi", "yarden-halperin"],
       stat: {
         value: "$300M+",
         label: "Venture funding raised by alumni founders",
       },
+      stories: [
+        {
+          date: "Jul 13, 2026",
+          title: "Automating Software and Success: MS/MBA alum's start-up achieves billion-dollar valuation",
+          summary: "Blitzy offers an autonomous software development platform for enterprise.",
+          tags: ["AI / Machine Learning", "Alumni", "Entrepreneurship"],
+          href: "https://seas.harvard.edu/news/automating-software-and-success-msmba-alums-start-achieves-billion-dollar-valuation",
+        },
+        {
+          date: "Mar 25, 2026",
+          title: "Building Better Tools for Complex Engineering: MS/MBA alum co-founds billion-dollar start-up",
+          summary: "Nominal offers AI-driven data analysis tools for aerospace, defense and more.",
+          tags: ["AI / Machine Learning", "Alumni", "Entrepreneurship"],
+          href: "https://seas.harvard.edu/news/building-better-tools-complex-engineering-msmba-alum-co-founds-billion-dollar-start",
+        },
+        {
+          date: "Apr 3, 2026",
+          title: "Three SEAS start-ups named President's Innovation Challenge finalists",
+          summary: "Health and research ventures will compete for a share of a $500,000 prize pool.",
+          tags: ["Entrepreneurship", "Health / Medicine", "Robotics"],
+          href: "https://seas.harvard.edu/news/three-seas-start-ups-named-presidents-innovation-challenge-finalists",
+        },
+      ],
     },
+    testimonials: [
+      {
+        quote:
+          "The MS/MBA has expanded my world. I was hesitant at first that my software engineering experience wouldn't be valued in a business setting. What I found instead is a community of like-minded collaborators and friends, all of them interested in technology and in what it takes to lead a venture built on it. I've been challenged to apply creative problem solving, to explore areas of engineering I hadn't touched, and to think seriously about where I want my career to go.",
+        name: "Emmanuel S.",
+        role: "Current student",
+      },
+    ],
     objections: [
       {
         question: "Will I be the only engineer in a room of finance bros?",
@@ -379,14 +430,14 @@ export const VARIANTS: Variant[] = [
       title: "What's actually here",
       bullets: [
         "An MBA on its own reads as a business degree. This one comes with an engineering master's attached, which changes what people assume you can do.",
-        "A women's representative within the program itself.",
+        "Skyler Liu is the women's representative for the program, and runs everything from coding sessions to potlucks.",
         "Women in the alumni network who've founded venture-backed companies, run product at Google and AWS, and gone into investing.",
         "Two degrees at the end: an MBA from HBS and an MS in Engineering Sciences from SEAS.",
       ],
     },
     socialProof: {
-      // "Not as a diversity footnote, but as the main story" — so ICP C shows
-      // the full roster, founder and product and investor paths together.
+      // "The main story, not a diversity footnote" — the women alumni roster
+      // lives here and only here.
       title: "Women who've done it",
       featuredAlumni: [
         "yinka-ogunbiyi",
@@ -396,26 +447,33 @@ export const VARIANTS: Variant[] = [
         "shannon-kay",
       ],
     },
+    testimonials: [
+      {
+        quote:
+          "I'm so proud to be the women's rep for my cohort. I host vibe coding sessions, cozy potluck nights, and outings to explore Boston. Getting close outside of class is what makes learning together in the classroom all the more fun.",
+        name: "Skyler Liu",
+        role: "Current student · Women's representative",
+      },
+      {
+        quote:
+          "I've made lifelong friends in the MS/MBA and met some of the most inspiring women along the way. It's where I found the courage to go all in on founding my venture in women's health, and I've felt supported the whole way in dreaming big with the business.",
+        name: "Jolie L.",
+        role: "Current student",
+      },
+    ],
     objections: [
       {
-        // No placeholder text in this answer: it is emitted into the FAQPage
-        // schema, so anything written here is what AI assistants will quote as
-        // the program's answer. Add the cohort stat once it's confirmed.
+        // This answer is emitted into the FAQPage schema, so it's what an answer
+        // engine will quote as the program's own response.
         question: "Will I be one of the only women in a technical program at HBS?",
         answer:
-          "There is a women's representative within the program, and the alumni network includes women who have founded venture-backed companies, led product at Google and AWS, and gone into investing. Ask to be introduced to any of them before you apply. That conversation will tell you more than this page can.",
+          "The program has a women's representative, Skyler Liu, and the alumni network includes women who have founded venture-backed companies, led product at Google and AWS, and gone into investing. Ask to be introduced to any of them before you apply. That conversation will tell you more than this page can.",
       },
       {
         question: "Is the dual degree worth it, or does the MBA alone open the same doors?",
         answer:
           "The engineering degree does most of the work in rooms where people are deciding whether you can evaluate what a technical team is telling you, which comes up constantly in venture, in founding, and in senior individual-contributor roles. An MBA on its own tends to leave that question open.",
       },
-    ],
-    // ICP C only — the shared blockers in PRE_LAUNCH_BLOCKERS apply on top.
-    communityAssets: [
-      "Women's Representative — name, title, and direct contact path. Note: Yarden Halperin was Co-President of the Women's Student Association as a student, which is a different and past role — don't conflate the two",
-      "Women in cohort — % or relevant stat, if appropriate to share. Once confirmed, add it to the \"Will I be one of the only women\" FAQ answer, which currently makes the community case without a number",
-      "Link to the broader Women @ HBS community",
     ],
   },
 ];

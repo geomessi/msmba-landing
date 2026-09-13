@@ -1,0 +1,58 @@
+---
+import type { Variant } from "../data/content";
+
+interface Props {
+	variant: Variant;
+}
+
+const { variant } = Astro.props;
+const { testimonials, theme } = variant;
+if (!testimonials || testimonials.length === 0) return null;
+
+const single = testimonials.length === 1;
+---
+
+<!-- Student voice, set in the editorial serif at size. For ICP C especially, the
+	 PRD is explicit that first-person quotes outweigh institutional copy. -->
+<section
+	class={`border-t ${theme.rule} px-5 py-20 sm:px-8 sm:py-24`}
+	aria-label={single ? "In their words" : "From the cohort"}
+>
+	<div class="mx-auto max-w-[1400px]">
+		<div class="grid gap-8 lg:grid-cols-[10rem_1fr] lg:gap-20">
+			<p class="eyebrow shrink-0 text-ink-muted lg:pt-5">
+				{single ? "In their words" : "From the cohort"}
+			</p>
+
+			<div class={single ? "" : "grid gap-10 lg:grid-cols-2 lg:gap-14"}>
+				{
+					testimonials.map((item) => (
+						<figure class="reveal relative">
+							<span
+								class="pointer-events-none absolute -top-6 -left-2 font-editorial text-8xl leading-none text-crimson/15 select-none"
+								aria-hidden="true"
+							>
+								“
+							</span>
+
+							<blockquote class="relative">
+								<p
+									class={`font-editorial leading-[1.3] text-ink ${
+										single ? "max-w-4xl text-[clamp(1.5rem,3vw,2.25rem)]" : "text-[clamp(1.25rem,2vw,1.625rem)]"
+									}`}
+								>
+									{item.quote}
+								</p>
+							</blockquote>
+
+							<figcaption class={`mt-6 flex flex-wrap items-baseline gap-x-3 border-t ${theme.rule} pt-4`}>
+								<span class="font-display font-bold text-ink">{item.name}</span>
+								<span class="eyebrow text-ink-muted">{item.role}</span>
+							</figcaption>
+						</figure>
+					))
+				}
+			</div>
+		</div>
+	</div>
+</section>

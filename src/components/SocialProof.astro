@@ -1,18 +1,15 @@
 ---
-import { getAlumni, PRE_LAUNCH_BLOCKERS } from "../data/content";
+import { getAlumni } from "../data/content";
 import type { Variant } from "../data/content";
+import FeaturedStories from "./FeaturedStories.astro";
 
 interface Props {
 	variant: Variant;
 }
 
 const { variant } = Astro.props;
-const { socialProof, communityAssets, theme } = variant;
-const alumni = getAlumni(socialProof.featuredAlumni);
-
-// Consent, photo rights and quotes are outstanding on every variant that names
-// these people — which is all of them — so the notice is not ICP C-only.
-const openItems = [...PRE_LAUNCH_BLOCKERS, ...(communityAssets ?? [])];
+const { socialProof, theme } = variant;
+const alumni = getAlumni(socialProof.featuredAlumni ?? []);
 
 function initials(name: string): string {
 	return name
@@ -44,90 +41,74 @@ function initials(name: string): string {
 					)
 				}
 
-				<!-- Alumni as an editorial list: portrait, name, credential, and what
-					 they actually built. Rows rather than a grid, so a real quote can
-					 slot in under any one of them without reflowing the section. -->
-				<ul class={`mt-10 border-t ${theme.rule}`}>
-					{
-						alumni.map((alum) => (
-							<li class={`reveal border-b ${theme.rule}`}>
-								<article class="flex flex-col gap-5 py-7 sm:flex-row sm:gap-8">
-									{/* Portrait, with initials showing through until a photo lands */}
-									<div class="relative h-20 w-20 shrink-0 overflow-hidden rounded-full bg-crimson/10">
-										<span
-											class="absolute inset-0 grid place-items-center font-editorial text-2xl text-crimson"
-											aria-hidden="true"
-										>
-											{initials(alum.name)}
-										</span>
-										<img
-											src={alum.photo}
-											alt={alum.name}
-											width="160"
-											height="160"
-											loading="lazy"
-											decoding="async"
-											class="relative h-full w-full object-cover"
-											data-fallback-initials
-										/>
-									</div>
-
-									<div class="min-w-0 flex-1">
-										<div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-											<h3 class="font-display text-xl font-bold tracking-tight text-ink">
-												{alum.name}
-											</h3>
-											{alum.pronouns && <span class="text-sm text-ink-muted">{alum.pronouns}</span>}
-										</div>
-
-										<p class="mt-1 text-ink">
-											<span class="font-semibold">{alum.role}</span>
-											<span class="text-ink-muted"> · </span>
-											{alum.company}
-										</p>
-
-										<p class="mt-3 max-w-2xl leading-relaxed text-ink-soft">{alum.detail}</p>
-
-										<div class="mt-4 flex flex-wrap items-center gap-2">
-											<span class="eyebrow border border-crimson/30 px-2.5 py-1 text-crimson">
-												{alum.credential}
-											</span>
-											{alum.paths.map((path) => (
-												<span class={`eyebrow border ${theme.rule} px-2.5 py-1 text-ink-muted`}>
-													{path}
-												</span>
-											))}
-										</div>
-
-										{alum.quote && (
-											<blockquote class="mt-5 border-l-2 border-crimson pl-5">
-												<p class="font-editorial text-xl leading-snug text-ink italic">
-													“{alum.quote}”
-												</p>
-											</blockquote>
-										)}
-									</div>
-								</article>
-							</li>
-						))
-					}
-				</ul>
+				{socialProof.stories && <FeaturedStories stories={socialProof.stories} variant={variant} />}
 
 				{
-					openItems.length > 0 && (
-						<div class="reveal mt-8 border border-dashed border-crimson/35 bg-crimson/[0.04] p-8">
-							<p class="eyebrow text-crimson">Still open before launch</p>
-							<ul class="mt-5 space-y-3">
-								{openItems.map((asset) => (
-									<li class="flex gap-4 text-ink-soft">
-										<span class="text-crimson" aria-hidden="true">
-											—
-										</span>
-										<span>{asset}</span>
-									</li>
-								))}
-							</ul>
-						</div>
+					alumni.length > 0 && (
+						<ul class={`mt-10 border-t ${theme.rule}`}>
+							{alumni.map((alum) => (
+								<li class={`reveal border-b ${theme.rule}`}>
+									<article class="flex flex-col gap-5 py-7 sm:flex-row sm:gap-8">
+										<div class="relative h-20 w-20 shrink-0 overflow-hidden rounded-full bg-crimson/10">
+											<span
+												class="absolute inset-0 grid place-items-center font-editorial text-2xl text-crimson"
+												aria-hidden="true"
+											>
+												{initials(alum.name)}
+											</span>
+											<img
+												src={alum.photo}
+												alt={alum.name}
+												width="160"
+												height="160"
+												loading="lazy"
+												decoding="async"
+												class="relative h-full w-full object-cover"
+												data-fallback-initials
+											/>
+										</div>
+
+										<div class="min-w-0 flex-1">
+											<div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+												<h3 class="font-display text-xl font-bold tracking-tight text-ink">
+													{alum.name}
+												</h3>
+												{alum.pronouns && (
+													<span class="text-sm text-ink-muted">{alum.pronouns}</span>
+												)}
+											</div>
+
+											<p class="mt-1 text-ink">
+												<span class="font-semibold">{alum.role}</span>
+												<span class="text-ink-muted"> · </span>
+												{alum.company}
+											</p>
+
+											<p class="mt-3 max-w-2xl leading-relaxed text-ink-soft">{alum.detail}</p>
+
+											<div class="mt-4 flex flex-wrap items-center gap-2">
+												<span class="eyebrow border border-crimson/30 px-2.5 py-1 text-crimson">
+													{alum.credential}
+												</span>
+												{alum.paths.map((path) => (
+													<span class={`eyebrow border ${theme.rule} px-2.5 py-1 text-ink-muted`}>
+														{path}
+													</span>
+												))}
+											</div>
+
+											{alum.quote && (
+												<blockquote class="mt-5 border-l-2 border-crimson pl-5">
+													<p class="font-editorial text-xl leading-snug text-ink italic">
+														“{alum.quote}”
+													</p>
+												</blockquote>
+											)}
+										</div>
+									</article>
+								</li>
+							))}
+						</ul>
 					)
 				}
 			</div>
@@ -136,8 +117,8 @@ function initials(name: string): string {
 </section>
 
 <script>
-	// Photos are pending (see public/alumni/README.md). Until a file exists, drop
-	// the broken <img> so the initials underneath show instead of a broken icon.
+	// Belt and braces: if a portrait ever fails to load, drop the <img> so the
+	// initials underneath show rather than a broken-image icon.
 	document.querySelectorAll<HTMLImageElement>("img[data-fallback-initials]").forEach((img) => {
 		const drop = () => img.remove();
 		if (img.complete && img.naturalWidth === 0) drop();

@@ -1,0 +1,48 @@
+---
+import type { Variant } from "../data/content";
+
+interface Props {
+	variant: Variant;
+}
+
+const { variant } = Astro.props;
+const { video, theme } = variant;
+if (!video) return null;
+
+// youtube-nocookie + a lazy iframe: no tracking cookie is set unless the viewer
+// actually plays the video, and the embed costs nothing on initial load.
+const src = `https://www.youtube-nocookie.com/embed/${video.youtubeId}?rel=0&modestbranding=1`;
+---
+
+<section class={`border-t ${theme.rule} px-5 py-20 sm:px-8 sm:py-24`}>
+	<div class="mx-auto max-w-[1400px]">
+		<div class="grid gap-8 lg:grid-cols-[10rem_1fr] lg:gap-20">
+			<p class="eyebrow shrink-0 text-ink-muted lg:pt-5">Inside the classroom</p>
+
+			<div>
+				<h2 class="max-w-2xl font-editorial text-section leading-[1.15] text-balance text-ink">
+					See the course for yourself
+				</h2>
+				<p class="mt-5 max-w-2xl text-lg leading-relaxed text-ink-soft">{video.caption}</p>
+
+				<figure class="reveal mt-10">
+					<div
+						class={`relative aspect-video w-full overflow-hidden border ${theme.rule} bg-ink shadow-[0_30px_70px_-30px_rgba(22,36,61,0.5)]`}
+					>
+						<iframe
+							src={src}
+							title={video.title}
+							loading="lazy"
+							class="absolute inset-0 h-full w-full"
+							allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+							referrerpolicy="strict-origin-when-cross-origin"
+							allowfullscreen></iframe>
+					</div>
+					<figcaption class="mt-4 text-sm text-ink-muted">
+						{video.title} — Harvard John A. Paulson School of Engineering and Applied Sciences
+					</figcaption>
+				</figure>
+			</div>
+		</div>
+	</div>
+</section>
