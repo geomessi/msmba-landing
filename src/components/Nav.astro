@@ -16,7 +16,7 @@ const links = [
 
 <header
 	id="site-nav"
-	class={`sticky top-0 z-50 border-b ${variant.theme.rule} bg-paper/85 backdrop-blur-md transition-shadow duration-300`}
+	class={`sticky top-0 z-50 border-b ${variant.theme.rule} relative bg-paper/85 backdrop-blur-md transition-shadow duration-300`}
 >
 	<div class="mx-auto flex max-w-[1400px] items-center justify-between gap-6 px-5 py-4 sm:px-8">
 		<!-- Shield + program lockup -->
@@ -67,9 +67,17 @@ const links = [
 			</a>
 		</nav>
 	</div>
+
+	<!-- Reading progress. Sits on the nav's bottom edge and scales from the left. -->
+	<span
+		id="scroll-progress"
+		class="absolute inset-x-0 bottom-0 h-0.5 origin-left scale-x-0 bg-gradient-to-r from-crimson to-crimson-bright"
+		aria-hidden="true"></span>
 </header>
 
 <script>
+	import { scrollProgress } from "../lib/interactions";
+
 	// Lift the nav with a shadow once the hero starts scrolling away.
 	const nav = document.getElementById("site-nav");
 	if (nav) {
@@ -79,4 +87,7 @@ const links = [
 		onScroll();
 		window.addEventListener("scroll", onScroll, { passive: true });
 	}
+
+	const bar = document.getElementById("scroll-progress");
+	if (bar) scrollProgress(bar);
 </script>

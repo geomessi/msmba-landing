@@ -48,12 +48,10 @@
 			</figcaption>
 		</div>
 
+		{/* Each line is its own element so it can type itself in, staggered.
+		    Syntax colours survive because the reveal is a clip, not a rewrite. */}
 		<pre
-			class="overflow-hidden px-[3cqw] py-[3.6cqw] font-mono text-[clamp(0.5rem,2cqw,0.9rem)] leading-[2.1]"><code><span class="select-none text-white/25">01  </span><span class="text-[#f692ce]">const</span> <span class="text-[#7dd3fc]">ambition</span> <span class="text-white/55">=</span> <span class="text-[#fdba74]">"founder"</span>
-<span class="select-none text-white/25">02  </span><span class="text-[#f692ce]">const</span> <span class="text-[#7dd3fc]">advantage</span> <span class="text-white/55">=</span> <span class="text-[#fdba74]">"technical"</span>
-<span class="select-none text-white/25">03  </span>
-<span class="select-none text-white/25">04  </span><span class="text-[#f692ce]">return</span> <span class="text-[#7dd3fc]">build</span><span class="text-white/55">(</span><span class="text-[#a5f3c0]">future</span><span class="text-white/55">)</span>
-<span class="select-none text-white/25">05  </span><span class="caret text-white/70">_</span></code></pre>
+			class="overflow-hidden px-[3cqw] py-[3.6cqw] font-mono text-[clamp(0.5rem,2cqw,0.9rem)] leading-[2.1]"><code><span class="code-line" style="animation-delay:.35s"><span class="select-none text-white/25">01  </span><span class="text-[#f692ce]">const</span> <span class="text-[#7dd3fc]">ambition</span> <span class="text-white/55">=</span> <span class="text-[#fdba74]">"founder"</span></span><span class="code-line" style="animation-delay:.95s"><span class="select-none text-white/25">02  </span><span class="text-[#f692ce]">const</span> <span class="text-[#7dd3fc]">advantage</span> <span class="text-white/55">=</span> <span class="text-[#fdba74]">"technical"</span></span><span class="code-line" style="animation-delay:1.5s"><span class="select-none text-white/25">03  </span></span><span class="code-line" style="animation-delay:1.7s"><span class="select-none text-white/25">04  </span><span class="text-[#f692ce]">return</span> <span class="text-[#7dd3fc]">build</span><span class="text-white/55">(</span><span class="text-[#a5f3c0]">future</span><span class="text-white/55">)</span></span><span class="code-line" style="animation-delay:2.3s"><span class="select-none text-white/25">05  </span><span class="caret text-white/70">_</span></span></code></pre>
 
 		<!-- Scanline drifting down the window -->
 		<span
@@ -61,6 +59,17 @@
 			aria-hidden="true"></span>
 	</figure>
 </div>
+
+<script is:inline>
+	// Applied synchronously so there is no flash of untyped code, and only when
+	// motion is welcome. If this never runs, the terminal simply reads as static
+	// code, which is the correct fallback.
+	(() => {
+		if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+		const lines = document.currentScript?.parentElement?.querySelectorAll(".code-line");
+		lines?.forEach((line) => line.classList.add("is-typing"));
+	})();
+</script>
 
 <style>
 	.caret {

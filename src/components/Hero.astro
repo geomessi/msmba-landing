@@ -98,8 +98,15 @@ const leadClass =
 	// container-scroll-animation, rebuilt without Framer Motion: map the hero's
 	// scroll progress to rotateX/translateY so the collage settles flat as the
 	// reader moves down the page.
+	import { magnetic, parallax } from "../lib/interactions";
+
 	const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 	const target = document.querySelector<HTMLElement>("[data-scroll-tilt]");
+
+	// The hero graphic drifts a few pixels against the cursor, and the primary
+	// call to action leans toward it.
+	if (target) parallax(target, 12);
+	document.querySelectorAll<HTMLElement>("#top .btn-primary").forEach((el) => magnetic(el));
 
 	if (target && !reduced) {
 		let queued = false;

@@ -103,8 +103,14 @@
 		transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
 	}
 
+	/* Magnetic: --mx / --my are written by a pointer listener, so the button
+	   leans very slightly toward the cursor before you reach it. */
+	.btn-primary {
+		transform: translate3d(var(--mx, 0px), var(--my, 0px), 0);
+	}
+
 	.btn-primary:hover {
-		transform: translateY(-1px);
+		transform: translate3d(var(--mx, 0px), calc(var(--my, 0px) - 2px), 0);
 		box-shadow:
 			inset 0 1px 0 rgb(255 255 255 / 0.22),
 			0 2px 4px rgb(22 36 61 / 0.3),
@@ -321,11 +327,34 @@
 		perspective: 1200px;
 	}
 
+	/* --px / --py come from cursor parallax, the rest from scroll position, so
+	   the two effects compose on one transform instead of fighting over it. */
 	.scroll-tilt > * {
-		transform: rotateX(var(--tilt, 3.5deg)) translateY(var(--lift, 12px))
-			scale(var(--tilt-scale, 0.985));
+		transform: translate3d(var(--px, 0px), var(--py, 0px), 0) rotateX(var(--tilt, 3.5deg))
+			translateY(var(--lift, 12px)) scale(var(--tilt-scale, 0.985));
 		transform-origin: center top;
 		will-change: transform;
+		transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+	}
+
+	/* Typewriter reveal, line by line, for the terminal graphic.
+	   The clip is applied by the .is-typing class rather than by default, so the
+	   code is readable if the animation never runs: a throttled or backgrounded
+	   tab pauses CSS animations, and a default clip would leave an empty
+	   terminal on screen. */
+	.code-line {
+		display: block;
+	}
+
+	.code-line.is-typing {
+		clip-path: inset(0 100% 0 0);
+		animation: type 0.55s steps(26) forwards;
+	}
+
+	@keyframes type {
+		to {
+			clip-path: inset(0 0 0 0);
+		}
 	}
 
 	.reveal {
@@ -380,6 +409,15 @@
 	.draw-line {
 		animation: none !important;
 		stroke-dashoffset: 0 !important;
+	}
+
+	.code-line.is-typing {
+		animation: none !important;
+		clip-path: none !important;
+	}
+
+	.scroll-tilt > * {
+		transition: none;
 	}
 
 	.pulse-halo {

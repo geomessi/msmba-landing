@@ -27,7 +27,12 @@ const { theme } = variant;
 				PROGRAM_STATS.map((stat) => (
 					<div class="reveal group px-0 py-9 sm:px-9 sm:first:pl-0 sm:last:pr-0">
 						<dd class="flex items-baseline gap-2">
-							<span class="font-display text-6xl font-extrabold tracking-[-0.04em] text-ink tabular-nums transition-colors duration-500 group-hover:text-crimson sm:text-7xl">
+							{/* The real value is in the DOM first; the count-up only replaces
+							    it once it scrolls into view, and never runs with motion off. */}
+							<span
+								data-count={stat.value}
+								class="font-display text-6xl font-extrabold tracking-[-0.04em] text-ink tabular-nums transition-colors duration-500 group-hover:text-crimson sm:text-7xl"
+							>
 								{stat.value}
 							</span>
 							{stat.unit && (
@@ -41,3 +46,8 @@ const { theme } = variant;
 		</dl>
 	</div>
 </section>
+
+<script>
+	import { countUp } from "../lib/interactions";
+	document.querySelectorAll<HTMLElement>("[data-count]").forEach(countUp);
+</script>
